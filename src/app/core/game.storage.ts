@@ -1,13 +1,18 @@
 import { IGameStorageData, GameStorageDataKey, IGame } from "./types"
 import Config from "./game.config"
 
-const { GameStorageName } = Config
+const { GameStorageName, Colors } = Config
 
 const InitialData: IGameStorageData = {
-    currentGame: null
+    currentGame: null,
+    currentGameData: {
+        solutions: [],
+        activeSolutionItem: 0
+    },
+    colors: Colors,
 }
 
-const getData = (type: GameStorageDataKey): IGameStorageData[GameStorageDataKey] => {
+const getData = (type: GameStorageDataKey): any => {
     const data = readLSData()
     return data[type]
 }
@@ -49,5 +54,5 @@ const createLS = (): IGameStorageData => {
 }
 
 export {
-    getData, createData
+    getData, createData, InitialData, readLSData
 }

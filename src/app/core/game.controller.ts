@@ -1,6 +1,6 @@
 import Config from "./game.config"
-import { GameModelType, IGame } from "./types"
-import { createData, getData } from "./game.storage"
+import { GameModelType, IGame, IGameStorageData } from "./types"
+import { createData, getData, readLSData } from "./game.storage"
 
 const { GameModels, Colors } = Config
 
@@ -34,6 +34,17 @@ const createGameTarget = (size: number): string[] => {
     return shuffleColors
 }
 
+const getGameData = (): IGameStorageData => {
+    let data = readLSData()
+    
+    data = {
+        ...data,
+        currentGame: getGame("model_2")
+    }
+
+    return data
+}
+
 export {
-    getGame
+    getGame, getGameData
 }
