@@ -6,8 +6,14 @@ const { GameStorageName, Colors } = Config
 const InitialData: IGameStorageData = {
     currentGame: null,
     currentGameData: {
-        solutions: [],
-        activeSolutionItem: 0
+        solutions: [{
+            colors: [],
+            status: "current"
+        }],
+        activeSolutionItem: {
+            row: 0,
+            column: 0
+        }
     },
     colors: Colors,
 }

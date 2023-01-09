@@ -13,13 +13,14 @@ const BoardRow = ({rowIndex}: IBoardRowProps) => {
 
     const columns = [...new Array(game.currentGame?.model.size)]
 
-    const activeRowClass = (rowIndex) == gameData?.solutions.length ? "active" : ""
+    const activeRowClass = gameData?.solutions[rowIndex]?.status == "current" ? "active" : ""
     
     const SolutionItems = columns.map((col, index) => 
     <SolutionItem key={`solution_${rowIndex+1}_${index+1}`}
-        isActive={activeRowClass == "active" && gameData?.activeSolutionItem == index}
+        isActive={activeRowClass == "active" && gameData?.activeSolutionItem.column == index}
         inActiveRow={activeRowClass == "active"}
         solutionIndex={index}
+        rowIndex={rowIndex}
     />)
 
     return(

@@ -5,13 +5,16 @@ interface ISolutionItemProps {
     isActive: boolean
     inActiveRow: boolean
     solutionIndex: number
+    rowIndex: number
 }
 
-const SolutionItem = ({ isActive, inActiveRow, solutionIndex }: ISolutionItemProps) => {
+const SolutionItem = ({ isActive, inActiveRow, solutionIndex, rowIndex }: ISolutionItemProps) => {
 
-    const { setGame } = useContext(GameContext)
+    const { game, setGame } = useContext(GameContext)
+    const gameData = game.currentGameData
 
     const activeSolutionItemClass = isActive ? "active" : ""
+    const solutionColor = gameData.solutions[rowIndex]?.colors[solutionIndex]
 
     const setSolutionItemToActive = () => {
         if(inActiveRow){
@@ -19,7 +22,10 @@ const SolutionItem = ({ isActive, inActiveRow, solutionIndex }: ISolutionItemPro
                 ...prev,
                 currentGameData: {
                     ...prev.currentGameData,
-                    activeSolutionItem: solutionIndex
+                    activeSolutionItem: {
+                        ...prev.currentGameData.activeSolutionItem,
+                        column: solutionIndex
+                    }
                 }
             }))
         }
@@ -27,6 +33,7 @@ const SolutionItem = ({ isActive, inActiveRow, solutionIndex }: ISolutionItemPro
     
     return(
         <button className={`square ${activeSolutionItemClass}`}
+        style={{backgroundColor: solutionColor}}
         onClick={setSolutionItemToActive}></button>
     )
 }
