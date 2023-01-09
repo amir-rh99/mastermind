@@ -101,9 +101,7 @@ button {
                     // border: 1px solid #adadad;
                     user-select: none;
                     &.active {
-                        border: 1px solid #7a7a7a;
-
-                        // border-width: 2px;
+                        border: 2px solid #7a7a7a;
                     }
                 }
             }
@@ -140,6 +138,7 @@ button {
         
         display: flex;
         gap: .5rem;
+
         .actions {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -152,6 +151,25 @@ button {
 
             .square {
                 border: 1px solid #ddd;
+                cursor: pointer;
+
+                svg {
+                    fill: #fff;
+                }
+                
+                &.done{
+                    background-color: #33afd4;
+                    
+                    &:disabled{
+                        background-color: #d44633;
+                        opacity: .75;
+                        cursor: default;
+                    }
+                }
+
+                &.backspace{
+                    background-color: #858282;
+                }
             }
         }
 

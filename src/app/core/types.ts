@@ -8,7 +8,7 @@ export type GameModelType = "model_1" | "model_2" | "model_3"
 interface IUserSolution {
     exact?: number
     correct?: number
-    status: "current" | "complete"
+    // status: "current" | "complete"
     colors: string[]
 }
 export interface IGame {
@@ -20,9 +20,11 @@ export interface IGameStorageData {
     currentGame: IGame | null
     currentGameData: {
         solutions: IUserSolution[]
-        activeSolutionItem: {
-            row: number
-            column: number
+        currentRow: {
+            index: number
+            activeColumn: number
+            colors: string[]
+            isFull: boolean
         }
     }
     colors: string[]

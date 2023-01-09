@@ -1,4 +1,6 @@
+// import { GameProvider } from "./GameContext"
 import { GameProvider } from "./GameContext"
+
 import { Main } from "./components"
 import "./styles.scss"
 

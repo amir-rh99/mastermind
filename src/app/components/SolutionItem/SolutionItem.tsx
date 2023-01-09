@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import { GameContext } from "../../GameContext"
+import { ActionTypes } from "../../store/game.actions"
 
 interface ISolutionItemProps {
     isActive: boolean
@@ -10,31 +11,36 @@ interface ISolutionItemProps {
 
 const SolutionItem = ({ isActive, inActiveRow, solutionIndex, rowIndex }: ISolutionItemProps) => {
 
-    const { game, setGame } = useContext(GameContext)
+    const { game, dispatch } = useContext(GameContext)
     const gameData = game.currentGameData
 
     const activeSolutionItemClass = isActive ? "active" : ""
-    const solutionColor = gameData.solutions[rowIndex]?.colors[solutionIndex]
+    const solutionColor = inActiveRow ? gameData.currentRow.colors[solutionIndex] : ""
 
     const setSolutionItemToActive = () => {
-        if(inActiveRow){
-            setGame(prev => ({
-                ...prev,
-                currentGameData: {
-                    ...prev.currentGameData,
-                    activeSolutionItem: {
-                        ...prev.currentGameData.activeSolutionItem,
-                        column: solutionIndex
-                    }
-                }
-            }))
-        }
+
+        dispatch({
+            type: ActionTypes.SetColumnActive,
+            payload: solutionIndex
+        })
+        // if(inActiveRow){
+        //     setGame(prev => ({
+        //         ...prev,
+        //         currentGameData: {
+        //             ...prev.currentGameData,
+        //             activeSolutionItem: {
+        //                 ...prev.currentGameData.activeSolutionItem,
+        //                 column: solutionIndex
+        //             }
+        //         }
+        //     }))
+        // }
     }
     
     return(
-        <button className={`square ${activeSolutionItemClass}`}
+        <div className={`square ${activeSolutionItemClass}`}
         style={{backgroundColor: solutionColor}}
-        onClick={setSolutionItemToActive}></button>
+        onClick={setSolutionItemToActive}></div>
     )
 }
 

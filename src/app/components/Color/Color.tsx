@@ -1,5 +1,6 @@
 import { useContext } from "react"
 import { GameContext } from "../../GameContext"
+import { ActionTypes } from "../../store/game.actions"
 
 interface IColorProps {
     color: string
@@ -8,17 +9,30 @@ interface IColorProps {
 
 const Color = ({ color, index }: IColorProps) => {
 
-    const { game, setGame } = useContext(GameContext)
-    const gameData = game.currentGameData
+    const { dispatch, game } = useContext(GameContext)
 
     const handleColorSelect = () => {
 
-        const activeSolutionItem = gameData.activeSolutionItem
-        const currentSolution = gameData.solutions[activeSolutionItem.row]
-        const colors = [...currentSolution.colors]    
-        colors[activeSolutionItem.column] = color
+        dispatch({
+            type: ActionTypes.SetColor,
+            payload: color
+        })
 
-        const nextSolutionItemColumn = getNextSolutionItemColumn(game.currentGame?.model.size!, colors)
+        dispatch({
+            type: ActionTypes.SearchForNextPossibleActiveColumn
+        })
+        // dispatch({type: Types.NextSolution, payload: {
+        //     id
+        // }})
+        
+        // const activeSolutionItem = gameData.activeSolutionItem
+        // const currentSolution = gameData.solutions[activeSolutionItem.row]
+        // const colors = [...currentSolution.colors]    
+        // colors[activeSolutionItem.column] = color
+
+        // const nextSolutionItemColumn = getNextSolutionItemColumn(game.currentGame?.model.size!, colors)
+
+
         // const activeSolutionItem = gameData.activeSolutionItem
 
         // const solutions = [...gameData.solutions]
@@ -28,17 +42,17 @@ const Color = ({ color, index }: IColorProps) => {
         // colors[activeSolutionItem.column] = color
         // currentSolution.colors = colors
 
-        setGame(prev => ({
-            ...prev,
-            currentGameData: {
-                ...prev.currentGameData,
-                activeSolutionItem: {
-                    ...activeSolutionItem,
-                    column: nextSolutionItemColumn
-                }
-                // solutions
-            }
-        }))
+        // setGame(prev => ({
+        //     ...prev,
+        //     currentGameData: {
+        //         ...prev.currentGameData,
+        //         activeSolutionItem: {
+        //             ...activeSolutionItem,
+        //             column: nextSolutionItemColumn
+        //         }
+        //         // solutions
+        //     }
+        // }))
     }
 
     const getNextSolutionItemColumn = (size: number, colors: string[]) => {

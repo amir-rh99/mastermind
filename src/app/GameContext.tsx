@@ -1,33 +1,30 @@
-import { useEffect } from "react";
-import {
-    createContext,
-    Dispatch,
-    PropsWithChildren,
-    SetStateAction,
-    useState,
-} from "react";
+import React, { createContext, PropsWithChildren, useReducer, useEffect } from "react"
+
+import GameReducer from "./store/game.reducer";
 
 import { IGameStorageData } from "./core/types";
 import { getGameData } from "./core/game.controller";
+import { GameActions } from "./store/game.actions";
 
 const defaultValue: IGameStorageData = getGameData()
 
-type UpdateType = Dispatch<SetStateAction<IGameStorageData>>;
-const defaultUpdate: UpdateType = () => defaultValue;
-
-const GameContext = createContext({
+const GameContext = createContext<{
+    game: IGameStorageData,
+    dispatch: React.Dispatch<GameActions>
+}>({
     game: defaultValue,
-    setGame: defaultUpdate,
-});
+    dispatch: () => {}
+})
 
-function GameProvider(props: PropsWithChildren<{}>) {
-    const [game, setGame] = useState(defaultValue);
+function GameProvider(props: PropsWithChildren) {
+
+    const [game, dispatch] = useReducer(GameReducer, defaultValue);
 
     useEffect(() => {
         
     }, [game])
 
-    return <GameContext.Provider value={{ game, setGame }} {...props} />;
+    return <GameContext.Provider value={{ game, dispatch }} {...props} />;
 }
 
 export {
