@@ -26,6 +26,7 @@ h1 {
 button {
     border: none;
 }
+
 .main_container{
     display: flex;
     justify-content: center;
@@ -56,7 +57,6 @@ button {
         top: 0;
         background-color: #fff;
         padding: .5rem 0;
-        // box-shadow: 0 1px 5px rgba(100, 100, 100, 0.2);
         border-bottom: 1px solid #ddd;
 
         .square {
@@ -81,6 +81,16 @@ button {
             display: flex;
             gap: .5rem;
             opacity: .5;
+
+            &.past {
+                opacity: 1;
+                
+                .solution {
+                    .square {
+                        cursor: pointer;
+                    }
+                }
+            }
 
             &.active {
                 opacity: 1;
@@ -107,16 +117,44 @@ button {
             }
 
             .result {
-                display: grid;
-                gap: .25rem;
-                grid-template-columns: repeat(2, 1fr);
-                align-items: center;
+                // background-color: rgb(218, 218, 218);
+                // border: 1px solid #ddd;
+                border-radius: .5rem;
+                
+                height: $square_sie;
+                width: $square_sie;
 
-                .square {
+                display: grid;
+                justify-items: center;
+                align-items: center;
+                gap: .25rem;
+
+                opacity: 0;
+                transition: .25s;
+                transform: scale(0) rotate(180deg);
+
+                &.show {
+                    transform: scale(1) rotate(0);
+                    opacity: 1;
+                }
+
+                grid-template-columns: repeat(2, 1fr);
+
+                .square:not(.action) {
                     width: 1rem;
                     height: 1rem;
                     border-radius: .25rem;
                     border: 1px solid rgb(202, 202, 202);
+
+                    &.exact {
+                        background-color: rgb(10, 158, 35);
+                    } 
+                    &.correct {
+                        background-color: rgb(181, 184, 11);
+                    } 
+                    &.wrong {
+                        background-color: rgb(158, 39, 10);
+                    } 
                 }
             }
         }

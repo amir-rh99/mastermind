@@ -30,7 +30,8 @@ const getGame = (type: GameModelType): IGame => {
 }
 
 const createGameTarget = (size: number): string[] => {
-    const shuffleColors = [...Colors.sort(() => 0.5 - Math.random()).splice(0, size)]
+    const colors = [...Colors]
+    const shuffleColors = colors.sort(() => 0.5 - Math.random()).splice(0, size)
     return shuffleColors
 }
 

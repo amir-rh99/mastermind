@@ -5,10 +5,11 @@ export interface IGameModel {
 
 export type GameModelType = "model_1" | "model_2" | "model_3"
 
-interface IUserSolution {
+type ResultStatus = "exact" | "correct" | "wrong"
+export interface IUserSolution {
     exact?: number
     correct?: number
-    // status: "current" | "complete"
+    colorsStatus?: ResultStatus[]
     colors: string[]
 }
 export interface IGame {
@@ -16,6 +17,9 @@ export interface IGame {
     model: IGameModel
     createdAt: Date
 }
+
+type RowColor = string | undefined
+
 export interface IGameStorageData {
     currentGame: IGame | null
     currentGameData: {
@@ -23,9 +27,10 @@ export interface IGameStorageData {
         currentRow: {
             index: number
             activeColumn: number
-            colors: string[]
+            colors: RowColor[]
             isFull: boolean
-        }
+        },
+        status: "pending" | "lose" | "win"
     }
     colors: string[]
 }

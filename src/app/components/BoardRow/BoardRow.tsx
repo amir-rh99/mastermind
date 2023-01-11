@@ -1,43 +1,46 @@
 import { useContext } from "react"
-import { SolutionItem } from "../"
+import { SolutionItem, SolutionResult } from "../"
 import { GameContext } from "../../GameContext"
 
 interface IBoardRowProps {
     rowIndex: number
 }
 
-const BoardRow = ({rowIndex}: IBoardRowProps) => {
+const BoardRow = ({ rowIndex }: IBoardRowProps) => {
 
     const { game } = useContext(GameContext)
     const gameData = game.currentGameData
+    const activeRowIndex = gameData.currentRow.index
 
+    // console.log("X");
+    
     const columns = [...new Array(game.currentGame?.model.size)]
 
-    // const activeRowClass = gameData?.solutions[rowIndex]?.status == "current" ? "active" : ""
-    const activeRowClass = gameData.currentRow.index == rowIndex ? "active" : ""
+    const rowStatus: "active" | "past" | "" = 
+    activeRowIndex == rowIndex ? "active" :
+    rowIndex < activeRowIndex ? "past" : ""
     
     const SolutionItems = columns.map((col, index) => 
-    <SolutionItem key={`solution_${rowIndex+1}_${index+1}`}
-        isActive={activeRowClass == "active" && gameData?.currentRow.activeColumn == index}
-        inActiveRow={activeRowClass == "active"}
+    <SolutionItem 
+        key={`solution_${rowIndex+1}_${index+1}`}
         solutionIndex={index}
         rowIndex={rowIndex}
     />)
 
     return(
-        <div 
-        // ref={index+1 == rows.length ? bottomRef : null}
-        className={`row ${activeRowClass}`}
-        >
+        <div className={`row ${rowStatus}`}>
             <div className={`solution`}>
                 { SolutionItems }
             </div>
-            <div className="result">
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-            </div>
+            {
+                // rowStatus !== "" ? 
+                <div className={`result ${rowIndex < activeRowIndex ? 'show' : ''}`}>
+                    <SolutionResult
+                    rowIndex={rowIndex}
+                    />
+                </div> 
+                // : ""
+            }
         </div>
     )
 }

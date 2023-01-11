@@ -5,4 +5,6 @@ export { default as PickerBox } from "./PickerBox/PickerBox";
 export { default as Color } from "./Color/Color";
 export { default as Target } from "./Target/Target";
 export { default as SolutionItem } from "./SolutionItem/SolutionItem";
-export { default as Actions } from "./Actions/Actions";
+export { default as SolutionResult } from "./SolutionResult/SolutionResult"
+export { default as DoneAction } from "./Actions/DoneAction";
+export { default as BackAction } from "./Actions/BackAction"

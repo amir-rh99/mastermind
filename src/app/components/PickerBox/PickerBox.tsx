@@ -1,10 +1,11 @@
 import { useContext } from "react"
 import { GameContext } from "../../GameContext"
-import { Color, Actions } from "../"
+import { Color, DoneAction, BackAction } from "../"
 
 const PickerBox = () => {
     
     const { game } = useContext(GameContext)
+    
     const ColorItems = game.colors.map((color, index) => 
         <Color key={`color_${index+1}`}
         color={color}
@@ -18,7 +19,8 @@ const PickerBox = () => {
                 { ColorItems }
             </div>
             <div className="actions">
-                <Actions />
+                <BackAction />
+                <DoneAction />
             </div>
         </div>
     )

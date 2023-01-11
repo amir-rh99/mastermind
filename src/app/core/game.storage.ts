@@ -12,7 +12,8 @@ const InitialData: IGameStorageData = {
             activeColumn: 0,
             colors: [],
             isFull: false
-        }
+        },
+        status: "pending"
     },
     colors: Colors,
 }
@@ -59,5 +60,5 @@ const createLS = (): IGameStorageData => {
 }
 
 export {
-    getData, createData, InitialData, readLSData
+    getData, createData, InitialData, readLSData, writeToLS
 }
