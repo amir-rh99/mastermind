@@ -1,8 +1,7 @@
-import Config from "./game.config"
 import { GameModelType, IGame, IGameStorageData } from "./types"
-import { createData, getData, readLSData } from "./game.storage"
+import { Config, InitialData } from "./game.config"
 
-const { GameModels, Colors } = Config
+const { GameStorageName, GameModels } = Config
 
 const createGame = (requestedModel: GameModelType): IGame => {
     let type = GameModels.model_2
@@ -16,36 +15,56 @@ const createGame = (requestedModel: GameModelType): IGame => {
         target: gameTarget, model: { size: type.size, chance: type.chance }, createdAt: now
     }
 
-    createData().currentGame(newGame)
     return newGame
 }
 
-const getCurrentGame = (): IGame | null => {
-    const currentGame = getData("currentGame")
-    return currentGame
+const getGame = (type: "default" | "new" = "default"): IGameStorageData => {
+
+    const data: IGameStorageData = LocalStorage().read()
+
+    const newGame = (): IGameStorageData => {
+        const game = createGame("model_2")
+        const data = LocalStorage().create()
+
+        data.currentGame = game
+
+        LocalStorage().write(data)
+        return data
+    }
+
+    if(type == "default" && data.currentGame) return data
+    else return newGame()
 }
 
-const getGame = (type: GameModelType): IGame => {
-    return getCurrentGame() || createGame(type)
+const LocalStorage = () => {
+    return {
+        read: (): IGameStorageData => {
+            let lsData = localStorage.getItem(GameStorageName)
+            let data: IGameStorageData
+        
+            if(lsData) data = JSON.parse(lsData)
+            else data = LocalStorage().create()
+        
+            return data
+        },
+        write: (inputData: IGameStorageData): void => {
+            let data = JSON.stringify(inputData)
+            localStorage.setItem(GameStorageName, data)
+        },
+        create: (): IGameStorageData => {            
+            const data = JSON.parse(JSON.stringify(InitialData))
+            LocalStorage().write(data)
+            return data
+        }
+    }
 }
 
 const createGameTarget = (size: number): string[] => {
-    const colors = [...Colors]
+    const colors = [...InitialData.colors]
     const shuffleColors = colors.sort(() => 0.5 - Math.random()).splice(0, size)
     return shuffleColors
 }
 
-const getGameData = (): IGameStorageData => {
-    let data = readLSData()
-    
-    data = {
-        ...data,
-        currentGame: getGame("model_2")
-    }
-
-    return data
-}
-
 export {
-    getGame, getGameData
+    getGame, LocalStorage
 }

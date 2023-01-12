@@ -1,7 +1,7 @@
 import { useEffect, useContext } from "react"
 import { GameContext } from "../../GameContext"
 import { PickerBox, BoardRow, Target, Celebrate } from "../"
-import { writeToLS } from "../../core/game.storage"
+import { LocalStorage } from "../../core/game.controller"
 
 const Board = () => {
 
@@ -10,7 +10,7 @@ const Board = () => {
     const rows = [...new Array(game.currentGame?.model.chance)]
 
     useEffect(()=>{
-        writeToLS(game)
+        LocalStorage().write(game)
     }, [game])
 
     const BoardRows = 

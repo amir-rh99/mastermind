@@ -10,12 +10,21 @@ $pickerbox_height: $square_width*2 + $gaping*8;
 $theme: "light";
 
 $background_color: null;
+$header_bgColor: rgb(255, 255, 255);
 
-@if ($theme == 'light') {
-    $background_color: rgb(250, 250, 250);
-} @else {
-    $background_color: #2B303C;
-}
+$solution_bgColor: rgb(200, 200, 200);
+$target_bgColor: rgb(100,100,100);
+
+$border_color: rgb(225,225,225);
+
+$text_color: rgb(50,50,50);
+
+$wrong_color: rgb(255, 75, 75);
+$correct_color: rgb(255, 215, 50);
+$exact_color: rgb(40, 180, 40);
+
+$check_bgColor: rgb(75, 200, 250);
+$disabled_check_bgColor: rgb(210, 75, 50);
 
 html {
     @media screen and (max-width: 768px) {
@@ -40,8 +49,8 @@ body {
 
 .header {
     height: $header_height;
-    background-color: #fff;
-    border-bottom: 1px solid #e9e9e9;
+    background-color: $header_bgColor;
+    border-bottom: 1px solid $border_color;
     
     display: flex;
     justify-content: center;
@@ -51,6 +60,7 @@ body {
 h1 {
     margin: 0;
     font-size: 1.5rem;
+    color: $text_color;
 }
 
 button {
@@ -72,10 +82,6 @@ button {
         .target {
             opacity: 1;
         }
-        
-        // .rows{
-        //     margin-bottom: $gaping;
-        // }
     }
 
     .target {        
@@ -89,27 +95,34 @@ button {
         opacity: .75;
 
         .square {
-            background-color: rgb(150, 150, 150);
+            background-color: $target_bgColor;
             border-radius: 1rem;
             border: 2px solid #fff;
-            outline: 1px solid rgb(150, 150, 150);
+            outline: 1px solid $target_bgColor;
             
+            transition: .75s;
+            transform: rotateY(0);
+
             svg {
                 fill: #fff;
             }
 
+            &.show {
+                transform: rotateY(360deg);
+            }
+
             &.remain{
                 color: rgb(75, 75, 75);
-                background-color: rgb(210, 210, 210);
+                background-color: $solution_bgColor
             }
 
             &.lose {
-                background-color: rgb(255, 75, 75);
+                background-color: $wrong_color;
                 color: #fff;
             }
 
             &.win {
-                background-color: rgb(37, 189, 37);
+                background-color: $exact_color;
                 color: #fff;
             }
         }
@@ -139,11 +152,11 @@ button {
 
             &.active .solution .square {
                 border: 3px solid $background_color;
-                outline: 1px solid rgb(155, 155, 155);
+                outline: 1px solid $solution_bgColor;
 
                 svg {
                     animation: blink 2s infinite;
-                    fill: rgb(100, 100, 100);
+                    fill: $target_bgColor;
                 }
 
                 &.colorful {
@@ -162,7 +175,7 @@ button {
                 gap: $gaping;
 
                 .square {
-                    background-color: rgb(210, 210, 210);
+                    background-color: $solution_bgColor;
                     border-radius: 1rem;
                     transition: .15s;
 
@@ -197,19 +210,18 @@ button {
                 }
 
                 .square {
-                    // background-color: rgb(210, 210, 210);
 
                     border-radius: .5rem;
-                    border: 1px solid rgb(210, 210, 210);
+                    border: 1px solid $solution_bgColor;
 
                     &.wrong {
-                        background-color: rgb(255, 75, 75);
+                        background-color: $wrong_color;
                     }
                     &.correct {
-                        background-color: rgb(255, 216, 45);
+                        background-color: $correct_color;
                     }
                     &.exact {
-                        background-color: rgb(37, 189, 37);
+                        background-color: $exact_color;
                     }
                 }
             }
@@ -223,31 +235,31 @@ button {
         left: 50%;
         transform: translate(-50%, 0);
     
-        border: 1px solid #d3d3d3;
+        border: 1px solid $border_color;
         padding: $gaping*4;
         border-radius: .5rem .5rem 0 0;
-        background-color: rgba(255, 255, 255, 0.75);
+        background-color: rgba(#fff, 0.75);
         // backdrop-filter: blur(2px);
-    
-        transition: .25s;
+
+        z-index: 99;
+        transition: .5s;
 
         .restart_actions{
             .restart{
                 height: $square_width;
                 width: $square_width*8;
-                background-color: rgb(75, 200, 250);
+                background-color: $check_bgColor;
                 color: #fff;
                 font-size: 1.2rem;
                 border-radius: $gaping;
+                cursor: pointer;
             }
 
             p {
                 text-align: center;
                 margin-top: 0;
 
-                &.lose {
-                    color: rgb(50, 50, 50);
-                }
+                color: rgb(50, 50, 50);
             }
         }
 
@@ -263,7 +275,7 @@ button {
                 border-radius: .5rem;
                 cursor: pointer;
                 border: 2px solid #fff;
-                outline: 1px solid #ddd;
+                outline: 1px solid $solution_bgColor;
             }
 
             .colors {
@@ -284,17 +296,19 @@ button {
                     }
         
                     &.done {
-                        background-color: rgb(75, 200, 250);
-        
+                        outline-color: $check_bgColor;
+                        background-color: $check_bgColor;
+
                         &:disabled{
-                            background-color: #d44633;
+                            outline-color: $disabled_check_bgColor;
+                            background-color: $disabled_check_bgColor;
                             opacity: .75;
                             cursor: default;
                         }
                     }
         
                     &.backspace {
-                        background-color: rgb(175, 175, 175);
+                        background-color: $solution_bgColor;
                     }
                 }
         

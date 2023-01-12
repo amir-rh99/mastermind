@@ -1,11 +1,13 @@
 import { useContext } from "react"
 import { GameContext } from "../../GameContext";
+import { ActionTypes } from "../../store/game.actions"
 
 const GameResult = () => {
 
-    const { game } = useContext(GameContext)
+    const { game, dispatch } = useContext(GameContext)
 
     const gameStatus = game.currentGameData.status
+    const handleRestart = () => dispatch({type: ActionTypes.Restart})
 
     const resultMessage = 
     gameStatus == "win" ? "Congratulations, you won 😀" :
@@ -17,7 +19,7 @@ const GameResult = () => {
                 {resultMessage}
             </p>
         
-            <button className="restart">
+            <button className="restart" onClick={handleRestart}>
                 Restart
             </button>
         </>

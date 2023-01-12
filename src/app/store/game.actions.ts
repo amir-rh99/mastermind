@@ -15,7 +15,8 @@ export enum ActionTypes {
     SearchForNextPossibleActiveColumn = "SEARCH_FOR_NEXT_POSSIBLE_ACTIVE_COLUMN",
     CheckSolution = "CHECK_SOLUTION",
     SetColorWithIndex = "SET_COLOR_WITH_INDEX",
-    MoveActiveColumn = "MOVE_ACTIVE_COLUMN"
+    MoveActiveColumn = "MOVE_ACTIVE_COLUMN",
+    Restart = "RESTART"
 }
 
 type GamePayload = {
@@ -25,6 +26,7 @@ type GamePayload = {
     [ActionTypes.CheckSolution] : undefined
     [ActionTypes.SetColorWithIndex] : number
     [ActionTypes.MoveActiveColumn] : "left" | "right" | "back"
+    [ActionTypes.Restart] : undefined
 }
 
 export type GameActions = ActionMap<GamePayload>[keyof ActionMap<GamePayload>];

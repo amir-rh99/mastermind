@@ -1,5 +1,6 @@
 import { IGameStorageData, IUserSolution } from "../core/types"
 import { GameActions, ActionTypes } from "./game.actions";
+import { getGame } from "../core/game.controller"
 
 const GameReducer = (state: IGameStorageData, action: GameActions): IGameStorageData => {
 
@@ -8,7 +9,7 @@ const GameReducer = (state: IGameStorageData, action: GameActions): IGameStorage
     const isRowFull = gameData.currentRow.isFull
     const isEndGame = gameData.status !== "pending"
 
-    if(isEndGame) return state;
+    if(isEndGame && action.type !== ActionTypes.Restart) return state;
 
     switch (action.type) {
         case ActionTypes.SetColor:
@@ -24,7 +25,6 @@ const GameReducer = (state: IGameStorageData, action: GameActions): IGameStorage
                     currentGameData: gameData
                 }
             }
-            break;
 
         case ActionTypes.SetColumnActive:
             {
@@ -36,7 +36,6 @@ const GameReducer = (state: IGameStorageData, action: GameActions): IGameStorage
                     currentGameData: gameData
                 }
             }
-            break;
             
         case ActionTypes.SearchForNextPossibleActiveColumn:
             {
@@ -78,7 +77,6 @@ const GameReducer = (state: IGameStorageData, action: GameActions): IGameStorage
                     currentGameData: gameData
                 }
             }
-            break;
 
         case ActionTypes.SetColorWithIndex:
             {
@@ -95,7 +93,6 @@ const GameReducer = (state: IGameStorageData, action: GameActions): IGameStorage
                     currentGameData: gameData
                 }
             }
-            break;
 
         case ActionTypes.MoveActiveColumn:
             {
@@ -141,16 +138,16 @@ const GameReducer = (state: IGameStorageData, action: GameActions): IGameStorage
                     currentGameData: gameData
                 }
             }
-            break;
+
         case ActionTypes.CheckSolution:
             {                                                
                 const gameSize = game?.model.size
                 const currentRowIndex = gameData.currentRow.index
-                const lastRowIndex = game?.model.chance! - 1
+                const lastRowIndex = game?.model.chance! - 1                
 
                 const isRowFull = 
                 gameSize == gameData.currentRow.colors.length && 
-                gameData.currentRow.colors.every(color => color !== undefined)
+                !gameData.currentRow.colors.includes(undefined)
                 
                 if(isRowFull){
                     const target = game?.target
@@ -176,19 +173,25 @@ const GameReducer = (state: IGameStorageData, action: GameActions): IGameStorage
                     solution.colorsStatus = colorsStatus
                     gameData.solutions.push(solution)
 
+                    let gameEnded = false;
+
                     if(exact == gameSize){
                         gameData.status = "win"
+                        gameEnded = true
                     } else {
                         if(currentRowIndex == lastRowIndex){
                             gameData.status = "lose"
+                            gameEnded = true
                         } else {
                             gameData.currentRow.activeColumn = 0
                             gameData.currentRow.isFull = false
                         }
                     }
                     
+                    if(gameEnded) gameData.currentRow.index = lastRowIndex + 1
+                    else gameData.currentRow.index = currentRowIndex + 1
+                    
                     gameData.currentRow.colors = []
-                    gameData.currentRow.index = currentRowIndex + 1
 
                     return {
                         ...state,
@@ -198,8 +201,13 @@ const GameReducer = (state: IGameStorageData, action: GameActions): IGameStorage
                 
                 return state
             }
-            break;
-            
+        
+        case ActionTypes.Restart:
+            {                
+                const newGame = getGame("new")                
+                return newGame
+            }
+
         default:
         return state
     }
@@ -234,4 +242,5 @@ const getColorsStatus = (solution: IUserSolution, colorsSize: number) => {
 
     return items
 }
+
 export default GameReducer

@@ -1,4 +1,4 @@
-import { IConfig } from "./types"
+import { IConfig, IGameStorageData } from "./types"
 
 const Config: IConfig = {
     GameStorageName: "mastermind_data",
@@ -28,18 +28,23 @@ const Config: IConfig = {
         "#795548",
         "#607D8B"
     ]
-    // Colors: [
-    //     "#00A308",
-    //     "#F77300",
-    //     "#2E54B2",
-    //     "#ff006e",
-    //     "#A16600",
-    //     "#FF8C84",
-    //     "#ae2012",
-    //     "#F8EA2A",
-    //     "#6C236C",
-    //     "#00d4f5"
-    // ]
 }
 
-export default Config;
+const InitialData: IGameStorageData = {
+    currentGame: null,
+    currentGameData: {
+        solutions: [],
+        currentRow: {
+            index: 0,
+            activeColumn: 0,
+            colors: [],
+            isFull: false
+        },
+        status: "pending"
+    },
+    colors: Config.Colors,
+}
+
+export {
+    Config, InitialData
+};
