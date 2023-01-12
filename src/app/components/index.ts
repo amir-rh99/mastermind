@@ -7,4 +7,6 @@ export { default as Target } from "./Target/Target";
 export { default as SolutionItem } from "./SolutionItem/SolutionItem";
 export { default as SolutionResult } from "./SolutionResult/SolutionResult"
 export { default as DoneAction } from "./Actions/DoneAction";
-export { default as BackAction } from "./Actions/BackAction"
+export { default as BackAction } from "./Actions/BackAction";
+export { default as Celebrate } from "./Celebrate/Celebrate";
+export { default as GameResult } from "./GameResult/GameResult";

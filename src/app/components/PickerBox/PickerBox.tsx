@@ -1,6 +1,6 @@
 import { useContext } from "react"
 import { GameContext } from "../../GameContext"
-import { Color, DoneAction, BackAction } from "../"
+import { Color, DoneAction, BackAction, GameResult } from "../"
 
 const PickerBox = () => {
     
@@ -13,15 +13,26 @@ const PickerBox = () => {
         />
     )
 
+    const isEndGame = game.currentGameData.status !== "pending"
+
     return(
         <div className="pickerbox">
-            <div className="colors">
-                { ColorItems }
-            </div>
-            <div className="actions">
-                <BackAction />
-                <DoneAction />
-            </div>
+            {
+                isEndGame ?
+                <div className="restart_actions">
+                    <GameResult />
+                </div>
+                :
+                <div className="game_actions">
+                    <div className="colors">
+                        { ColorItems }
+                    </div>
+                    <div className="actions">
+                        <BackAction />
+                        <DoneAction />
+                    </div>
+                </div>
+            }
         </div>
     )
 }

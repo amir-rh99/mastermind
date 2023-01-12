@@ -26,8 +26,8 @@ const Color = ({ color, index }: IColorProps) => {
         <button className="square color"
         style={{
             backgroundColor: color,
-            border: "1px solid",
-            borderColor: color
+            outline: "1px solid",
+            outlineColor: color
         }}
         onClick={handleColorSelect}
         >

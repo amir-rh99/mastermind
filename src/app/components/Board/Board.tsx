@@ -1,6 +1,6 @@
 import { useEffect, useContext } from "react"
 import { GameContext } from "../../GameContext"
-import { PickerBox, BoardRow, Target } from "../"
+import { PickerBox, BoardRow, Target, Celebrate } from "../"
 import { writeToLS } from "../../core/game.storage"
 
 const Board = () => {
@@ -20,17 +20,22 @@ const Board = () => {
         rowIndex={index}/>
     )
 
+    const isEndGame = game.currentGameData.status !== "pending"
+
     return(
-        <div 
-        className="board">
-            <div className="game_target">
-                <Target />
+        <>
+            { game.currentGameData.status == "win" ? <Celebrate /> : "" }
+            <div 
+            className={`board ${isEndGame ? "ended" : ""}`}>
+                <div className="target">
+                    <Target />
+                </div>
+                <div className="rows">
+                    { BoardRows }
+                </div>
+                <PickerBox />
             </div>
-            <div className="rows">
-                { BoardRows }
-            </div>
-            <PickerBox />
-        </div>
+        </>
     )
 }
 

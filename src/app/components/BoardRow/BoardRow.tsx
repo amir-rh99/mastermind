@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useRef, useEffect } from "react"
 import { SolutionItem, SolutionResult } from "../"
 import { GameContext } from "../../GameContext"
 
@@ -8,12 +8,23 @@ interface IBoardRowProps {
 
 const BoardRow = ({ rowIndex }: IBoardRowProps) => {
 
+    const activeRowRef = useRef<HTMLDivElement | null>(null)
+    
     const { game } = useContext(GameContext)
     const gameData = game.currentGameData
     const activeRowIndex = gameData.currentRow.index
-
-    // console.log("X");
     
+    useEffect(() => {        
+        const scrollTimeOut = setTimeout(() => {
+            activeRowRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            })
+        }, 100)
+
+        return () => clearTimeout(scrollTimeOut)
+    }, [game.currentGameData.currentRow.activeColumn])
+
     const columns = [...new Array(game.currentGame?.model.size)]
 
     const rowStatus: "active" | "past" | "" = 
@@ -28,19 +39,16 @@ const BoardRow = ({ rowIndex }: IBoardRowProps) => {
     />)
 
     return(
-        <div className={`row ${rowStatus}`}>
+        <div className={`row ${rowStatus}`}
+        ref={rowStatus == 'active' ? activeRowRef : null}>
             <div className={`solution`}>
                 { SolutionItems }
             </div>
-            {
-                // rowStatus !== "" ? 
-                <div className={`result ${rowIndex < activeRowIndex ? 'show' : ''}`}>
-                    <SolutionResult
-                    rowIndex={rowIndex}
-                    />
-                </div> 
-                // : ""
-            }
+            <div className={`result ${rowIndex < activeRowIndex ? 'show' : ''}`}>
+                <SolutionResult
+                rowIndex={rowIndex}
+                />
+            </div> 
         </div>
     )
 }
