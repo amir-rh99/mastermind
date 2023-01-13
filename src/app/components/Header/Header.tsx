@@ -1,7 +1,7 @@
-import { useState, useContext } from "react"
+import { useState, useContext, useEffect } from "react"
 import { GameContext } from "@app/store/GameContext"
 import { ActionTypes } from "@app/store/game.actions"
-import { Modal } from "@app/components"
+import { Modal, About } from "@app/components"
 
 import { ReactComponent as RestartSvg } from "@svg/restart.svg";
 import { ReactComponent as HelpSvg } from "@svg/help.svg";
@@ -10,6 +10,14 @@ const Header = () => {
 
     const { dispatch } = useContext(GameContext)
     const [modal, setModal] = useState(false)
+
+    useEffect(() => {
+        const isFirstTime = localStorage.getItem("mastermind_visited")
+        if(!isFirstTime){
+            localStorage.setItem("mastermind_visited", "true")
+            setModal(true)
+        }
+    }, [])
 
     const handleRestart = () => dispatch({ type: ActionTypes.Restart })
 
@@ -26,7 +34,7 @@ const Header = () => {
             </span>
 
             <Modal show={modal} onClose={() => setModal(false)}>
-                <div>sadasd</div>
+                <About />
             </Modal>
         </div>
     )

@@ -11,9 +11,32 @@ html {
 }
 
 body {
-    font-family: 'Lobster', cursive;
+    font-family: 'Rowdies', cursive;
     margin: 0;
     background-color: $background_color;
+}
+
+h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: $title_color;
+}
+
+button {
+    border: none;
+    font-family: 'Rowdies', cursive;
+}
+
+.exact {
+    color: $exact_color;
+}
+
+.correct {
+    color: $correct_color;
+}
+
+.wrong {
+    color: $wrong_color;
 }
 
 .main_container {
@@ -54,16 +77,6 @@ body {
     .restart svg {
         fill: $disabled_check_bgColor;
     }
-}
-
-h1 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: $text_color;
-}
-
-button {
-    border: none;
 }
 
 .board {
@@ -138,81 +151,81 @@ button {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: $gaping;
-
+        
             opacity: .5;
-
+        
             &.past, &.active {
                 opacity: 1;
-
+        
                 .solution .square {
                     cursor: pointer;
                 }
             }
-
+        
             &.active .solution .square {
                 border: 3px solid $background_color;
                 outline: 1px solid $solution_bgColor;
-
+        
                 svg {
                     animation: blink 2s infinite;
                     fill: $target_bgColor;
                 }
-
+        
                 &.colorful {
                     svg {
                         fill: #fff;
                     }
                 }
             }
-
+        
             .solution {
                 grid-column-start: 1;
                 grid-column-end: 5;
-
+        
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
                 gap: $gaping;
-
+        
                 .square {
                     background-color: $solution_bgColor;
                     border-radius: 1rem;
                     transition: .15s;
-
+        
                     position: relative;
-
+        
                     .color_num{
                         font-size: 1rem;
-
+        
                         position: absolute;
                         bottom: $gaping*2;
                         right: $gaping*2;
                     }
                 }
             }
-
+        
             .result {
-                padding: $gaping*2;
-
+                padding: $gaping;
+        
                 grid-column-start: 5;
                 grid-column-end: 6;
-
+        
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 gap: $gaping;
-
+        
                 transition: .5s;
                 transform: scale(.75) rotate(180deg);
-
+        
                 &.show {
                     transform: scale(1) rotate(0);
                     opacity: 1;
                 }
-
+        
                 .square {
-
+        
                     border-radius: .5rem;
                     border: 1px solid $solution_bgColor;
-
+        
                     &.wrong {
                         background-color: $wrong_color;
                     }

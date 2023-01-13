@@ -9,11 +9,8 @@ const DoneAction = () => {
     const { game, dispatch } = useContext(GameContext)
     const gameData = game.currentGameData
     
-    const handleDone = () => {
-        console.log("xc");
-        
-        dispatch({ type: ActionTypes.CheckSolution })
-    }
+    const handleDone = () => dispatch({ type: ActionTypes.CheckSolution })
+    
     const isCurrentRowFull = gameData.currentRow.isFull
 
     return(

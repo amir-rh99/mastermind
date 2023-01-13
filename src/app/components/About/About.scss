@@ -1,0 +1,37 @@
+@import "../../styles/variabels.scss";
+
+.about {
+    .title {
+        color: $title_color;
+        margin-bottom: 0;
+    }
+
+    p {
+        margin-bottom: .5rem;
+        margin-top: 0;
+        color: $text_color;
+        font-size: 1rem;
+        font-weight: 200;
+    }
+
+    ul, .note {
+        color: #616161;
+    }
+
+    ul {
+        padding: 0;
+        padding-left: 1rem;
+    }
+
+    .divider {
+        border-bottom: 1px solid $solution_bgColor;
+        margin: 1rem 0;
+    }
+
+    .github{
+        text-align: center;
+        svg {
+            width: 2rem;
+        }
+    }
+}
