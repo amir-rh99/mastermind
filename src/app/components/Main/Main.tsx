@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react"
-import { Board } from "../"
+import { Board, Header } from "../"
 import { GameContext } from "../../GameContext"
 import { ActionTypes } from "../../store/game.actions"
 
@@ -93,13 +93,11 @@ const Main = () => {
     return(
         <div>
             <header className="header">
-                <h1>
-                    MasterMind
-                </h1>
+                <Header />
             </header>
-            <div className="main_container">
+            <main className="main_container">
                 <Board />       
-            </div>
+            </main>
         </div>
     )
 }

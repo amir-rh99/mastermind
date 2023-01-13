@@ -23,7 +23,7 @@ const BoardRow = ({ rowIndex }: IBoardRowProps) => {
         }, 100)
 
         return () => clearTimeout(scrollTimeOut)
-    }, [game.currentGameData.currentRow.activeColumn])
+    }, [game.currentGameData.currentRow.activeColumn, game.currentGame])
 
     const columns = [...new Array(game.currentGame?.model.size)]
 
