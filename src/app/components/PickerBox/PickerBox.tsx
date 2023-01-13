@@ -1,6 +1,6 @@
 import { useContext } from "react"
-import { GameContext } from "../../GameContext"
-import { Color, DoneAction, BackAction, GameResult } from "../"
+import { GameContext } from "@app/store/GameContext"
+import { Color, DoneAction, BackAction, GameResult } from "@app/components"
 
 const PickerBox = () => {
     

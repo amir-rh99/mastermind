@@ -1,6 +1,6 @@
 import { useContext } from "react"
-import { GameContext } from "@app/GameContext";
-import { ActionTypes } from "../../store/game.actions";
+import { GameContext } from "@app/store/GameContext";
+import { ActionTypes } from "@app/store/game.actions";
 
 import { ReactComponent as DoneSvg } from "@svg/done.svg";
 

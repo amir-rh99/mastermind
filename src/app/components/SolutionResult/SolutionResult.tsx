@@ -1,6 +1,5 @@
 import { useContext } from "react"
-import { GameContext } from "../../GameContext"
-import { DoneAction } from "../"
+import { GameContext } from "@app/store/GameContext"
 
 interface ISolutionResultProps {
     rowIndex: number

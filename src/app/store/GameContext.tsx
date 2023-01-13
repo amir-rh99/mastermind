@@ -1,11 +1,11 @@
 import React, { createContext, PropsWithChildren, useReducer, useEffect } from "react"
 
-import GameReducer from "./store/game.reducer";
+import GameReducer from "./game.reducer";
 
-import { IGameStorageData } from "./core/types";
-import { getGame } from "./core/game.controller"
+import { IGameStorageData } from "../core/types";
+import { getGame } from "../core/game.controller"
 
-import { GameActions } from "./store/game.actions";
+import { GameActions } from "./game.actions";
 
 const defaultValue: IGameStorageData = getGame("default")
 

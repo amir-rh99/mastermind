@@ -1,7 +1,7 @@
 import { useState, useContext } from "react"
-import { GameContext } from "../../GameContext"
-import { ActionTypes } from "../../store/game.actions"
-import { Modal } from "../"
+import { GameContext } from "@app/store/GameContext"
+import { ActionTypes } from "@app/store/game.actions"
+import { Modal } from "@app/components"
 
 import { ReactComponent as RestartSvg } from "@svg/restart.svg";
 import { ReactComponent as HelpSvg } from "@svg/help.svg";

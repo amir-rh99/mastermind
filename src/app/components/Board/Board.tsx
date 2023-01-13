@@ -1,7 +1,7 @@
 import { useEffect, useContext } from "react"
-import { GameContext } from "../../GameContext"
-import { PickerBox, BoardRow, Target, Celebrate } from "../"
-import { LocalStorage } from "../../core/game.controller"
+import { GameContext } from "@app/store/GameContext"
+import { LocalStorage } from "@app/core/game.controller"
+import { PickerBox, BoardRow, Target, Celebrate } from "@app/components"
 
 const Board = () => {
 

@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react"
 import { Board, Header } from "../"
-import { GameContext } from "../../GameContext"
-import { ActionTypes } from "../../store/game.actions"
+import { GameContext } from "@app/store/GameContext"
+import { ActionTypes } from "@app/store/game.actions"
 
 type KeyType = "right" | "left" | "enter" | "back" | "number" | null
 

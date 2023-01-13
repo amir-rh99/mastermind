@@ -1,6 +1,6 @@
 import { useContext, useRef, useEffect } from "react"
-import { SolutionItem, SolutionResult } from "../"
-import { GameContext } from "../../GameContext"
+import { GameContext } from "@app/store/GameContext"
+import { SolutionItem, SolutionResult } from "@app/components"
 
 interface IBoardRowProps {
     rowIndex: number
