@@ -1,0 +1,26 @@
+$header_height: 3rem;
+$square_width: 3rem;
+$gaping: .25rem;
+$board_width: 28rem;
+
+$pickerbox_height: $square_width*2 + $gaping*8;
+
+// theming
+$theme: "light";
+
+$background_color: null;
+$header_bgColor: rgb(255, 255, 255);
+
+$solution_bgColor: rgb(200, 200, 200);
+$target_bgColor: rgb(100,100,100);
+
+$border_color: rgb(225,225,225);
+
+$text_color: rgb(50,50,50);
+
+$wrong_color: rgb(255, 75, 75);
+$correct_color: rgb(255, 215, 50);
+$exact_color: rgb(40, 180, 40);
+
+$check_bgColor: rgb(75, 200, 250);
+$disabled_check_bgColor: rgb(210, 75, 50);

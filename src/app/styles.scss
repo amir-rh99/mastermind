@@ -1,30 +1,4 @@
-
-$header_height: 3rem;
-$square_width: 3rem;
-$gaping: .25rem;
-
-
-$pickerbox_height: $square_width*2 + $gaping*8;
-
-// theming
-$theme: "light";
-
-$background_color: null;
-$header_bgColor: rgb(255, 255, 255);
-
-$solution_bgColor: rgb(200, 200, 200);
-$target_bgColor: rgb(100,100,100);
-
-$border_color: rgb(225,225,225);
-
-$text_color: rgb(50,50,50);
-
-$wrong_color: rgb(255, 75, 75);
-$correct_color: rgb(255, 215, 50);
-$exact_color: rgb(40, 180, 40);
-
-$check_bgColor: rgb(75, 200, 250);
-$disabled_check_bgColor: rgb(210, 75, 50);
+@import "./variabels.scss";
 
 html {
     @media screen and (max-width: 768px) {
@@ -51,10 +25,35 @@ body {
     height: $header_height;
     background-color: $header_bgColor;
     border-bottom: 1px solid $border_color;
-    
+
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+
+    .container {
+        display: flex;
+        max-width: $board_width;
+        width: 100%;
+    }
+
+    h1 {
+        flex-grow: 2;
+        display: flex;
+        justify-content: center;
+    }
+
+    .help, .restart {
+        margin: 0 1rem;
+        cursor: pointer;
+        svg {
+            width: 2rem;
+            fill: $text_color;
+        }
+    }
+
+    .restart svg {
+        fill: $disabled_check_bgColor;
+    }
 }
 
 h1 {
@@ -69,7 +68,7 @@ button {
 
 .board {
 
-    max-width: 28rem;
+    max-width: $board_width;
     margin: auto;
     padding: 1rem;
 
