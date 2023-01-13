@@ -7,7 +7,7 @@ import svgr from "vite-plugin-svgr"
 export default defineConfig({
   plugins: [svgr(), react()],
   build: {
-    outDir: "docs"
+    outDir: "build"
   },
   resolve: {
     alias: [
