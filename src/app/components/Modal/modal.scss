@@ -1,0 +1,95 @@
+@import "../../variabels.scss";
+
+.modal__wrap {
+    position: fixed;
+    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0 auto;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 100;
+    overflow-x: hidden;
+    background-color: rgba(0, 0, 0, 0.1);
+
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 500ms ease;
+}
+
+.visible {
+    pointer-events: auto;
+    opacity: 1;
+    transition: all 150ms ease-in-out;
+}
+
+.modal {
+    overflow-y: hidden;
+    overflow-x: hidden;
+    position: relative;
+    display: block;
+    min-height: 150px;
+    // max-width: 520px;
+    // min-width: 520px;
+    width: 520px;
+    margin: 15px 12px;
+    padding: 0 12px;
+
+    border-radius: 4px;
+    padding-bottom: 20px;
+    background-color: #fff;
+    align-self: center;
+
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    // backdrop-filter: blur(10px);
+    // -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.72);
+
+    transition: 500ms ease;
+    transform: scale(0);
+
+    @media screen and (max-width:520px) {
+        min-width: 320px;
+
+    }
+}
+
+.visible .modal {
+    transform: scale(1);
+}
+
+.close_modal{
+    width: 35px;
+    height: 35px;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    border-radius: 50%;
+    border: none;
+    background-color: #5e5e5e6c;
+    cursor: pointer;
+    border: 1px solid #fff;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    @media screen and (max-width:520px) {
+        width: 30px;
+        height: 30px;
+        top: 8px;
+        left: 8px;
+    }
+
+    &:hover{
+        background-color: #3d3d3d88;
+    }
+    svg{
+        fill: #fff;
+    }
+}
