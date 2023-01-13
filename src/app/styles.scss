@@ -304,10 +304,18 @@ button {
                             opacity: .75;
                             cursor: default;
                         }
+
+                        svg {
+                            width: 1.5rem;
+                        }
                     }
         
                     &.backspace {
                         background-color: $solution_bgColor;
+
+                        svg {
+                            width: 2.25rem;
+                        }
                     }
                 }
         
