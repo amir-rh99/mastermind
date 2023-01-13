@@ -62,7 +62,7 @@ const About = () => {
             <div className="divider"></div>
 
             <div className="github">
-                <a href="">
+                <a href="https://github.com/amir-rh99/mastermind" target="_blank">
                 <GithubSvg />
                 </a>
             </div>
