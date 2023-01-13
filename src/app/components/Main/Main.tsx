@@ -31,7 +31,9 @@ const Main = () => {
 
     const calculateDocumentSize = () => {
         const docHeight: number = document.documentElement.clientHeight || window.innerHeight
+        const docWidth: number = document.documentElement.clientWidth || window.innerWidth
         document.documentElement.style.setProperty("--doc_height", docHeight.toString() + "px")
+        document.documentElement.style.setProperty("--doc_width", docWidth.toString() + "px")
     }
 
     const handleKeyEvent = (event: any) => {

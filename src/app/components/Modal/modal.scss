@@ -1,4 +1,4 @@
-@import "../../variabels.scss";
+@import "../../styles/variabels.scss";
 
 .modal__wrap {
     position: fixed;
@@ -9,8 +9,8 @@
     margin: 0 auto;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: var(--doc_width);
+    height: var(--doc_height);
     z-index: 100;
     overflow-x: hidden;
     background-color: rgba(0, 0, 0, 0.1);
@@ -31,32 +31,26 @@
     overflow-x: hidden;
     position: relative;
     display: block;
-    min-height: 150px;
-    // max-width: 520px;
-    // min-width: 520px;
-    width: 520px;
-    margin: 15px 12px;
-    padding: 0 12px;
+    min-height: 10rem;
+
+    max-width: 32rem;
+    width: 100%;
+
+    margin: 1rem;
+    padding: 0 1rem;
 
     border-radius: 4px;
     padding-bottom: 20px;
     background-color: #fff;
     align-self: center;
 
-    background: rgba(255, 255, 255, 0.85);
-    border-radius: 16px;
+    background: rgba($background_color, .75);
+    border-radius: .5rem;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    // backdrop-filter: blur(10px);
-    // -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.72);
+    border: 1px solid $border_color;
 
     transition: 500ms ease;
     transform: scale(0);
-
-    @media screen and (max-width:520px) {
-        min-width: 320px;
-
-    }
 }
 
 .visible .modal {
@@ -64,27 +58,20 @@
 }
 
 .close_modal{
-    width: 35px;
-    height: 35px;
+    width: 2.5rem;
+    height: 2.5rem;
     position: absolute;
-    top: 15px;
-    left: 15px;
+    top: 1rem;
+    left: 1rem;
     border-radius: 50%;
     border: none;
-    background-color: #5e5e5e6c;
+    background-color: $target_bgColor;
     cursor: pointer;
     border: 1px solid #fff;
     
     display: flex;
     align-items: center;
     justify-content: center;
-
-    @media screen and (max-width:520px) {
-        width: 30px;
-        height: 30px;
-        top: 8px;
-        left: 8px;
-    }
 
     &:hover{
         background-color: #3d3d3d88;

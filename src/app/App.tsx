@@ -2,7 +2,7 @@
 import { GameProvider } from "./store/GameContext"
 
 import { Main } from "./components"
-import "./styles.scss"
+import "./styles/main.scss";
 
 const App = () => {
     return(
