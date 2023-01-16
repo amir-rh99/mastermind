@@ -1,7 +1,9 @@
 $header_height: 3rem;
 $square_width: 3rem;
-$gaping: .25rem;
-$board_width: 28rem;
+$gaping: .5rem;
+$row_gapping: .5rem;
+
+$board_width: 30rem;
 
 $pickerbox_height: $square_width*2 + $gaping*8;
 
@@ -10,18 +12,37 @@ $theme: "light";
 
 $background_color: rgb(245,245,245);
 $header_bgColor: rgb(255, 255, 255);
+$header_svgColor: rgb(75,75,75);
 
 $solution_bgColor: rgb(200, 200, 200);
 $target_bgColor: rgb(100,100,100);
+$solution_svgColor: rgb(100,100,100);
+$target_svgColor: rgb(250,250,250);
 
 $border_color: rgb(225,225,225);
 
 $title_color: rgb(50,50,50);
 $text_color: rgb(75,75,75);
 
-$wrong_color: rgb(255, 75, 75);
-$correct_color: rgb(255, 215, 50);
-$exact_color: rgb(40, 180, 40);
+$wrong_color: #EA5030;
+$correct_color: #F0AF2C;
+$exact_color: #1DB871;
 
 $check_bgColor: rgb(75, 200, 250);
 $disabled_check_bgColor: rgb(210, 75, 50);
+
+@if($theme != 'light'){
+    $background_color: rgb(40, 45, 52);
+    $header_bgColor: rgb(33, 37, 43);
+    $header_svgColor: rgb(175,175,175);
+
+    $solution_bgColor: rgb(143, 144, 167);
+    $target_bgColor: rgb(85, 88, 112);
+    $solution_svgColor: rgb(250,250,250);
+    $target_svgColor: rgb(250,250,250);
+
+    $border_color: rgb(61, 67, 75);
+    
+    $title_color: rgb(215,215,215);
+    $text_color: rgb(175,175,175);
+}

@@ -1,5 +1,8 @@
 @import "./variabels.scss";
 
+:root {
+    --theme: "light";
+}
 html {
     @media screen and (max-width: 768px) {
         font-size: 15px;
@@ -44,41 +47,6 @@ button {
     position: relative;
 }
 
-.header {
-    height: $header_height;
-    background-color: $header_bgColor;
-    border-bottom: 1px solid $border_color;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .container {
-        display: flex;
-        max-width: $board_width;
-        width: 100%;
-    }
-
-    h1 {
-        flex-grow: 2;
-        display: flex;
-        justify-content: center;
-    }
-
-    .help, .restart {
-        margin: 0 1rem;
-        cursor: pointer;
-        svg {
-            width: 2rem;
-            fill: $text_color;
-        }
-    }
-
-    .restart svg {
-        fill: $disabled_check_bgColor;
-    }
-}
-
 .board {
 
     max-width: $board_width;
@@ -87,8 +55,6 @@ button {
 
     display: flex;
     flex-direction: column;
-    gap: $gaping*4;
-
     
     &.ended {
         .target {
@@ -99,24 +65,26 @@ button {
     .target {        
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: $gaping;
+        gap: $row_gapping;
+
+        margin-bottom: $row_gapping*2;
 
         position: sticky;
-        top: $gaping;
+        top: $row_gapping;
         z-index: 9;
         opacity: .75;
 
         .square {
             background-color: $target_bgColor;
             border-radius: 1rem;
-            border: 2px solid #fff;
+            border: 2px solid $background_color;
             outline: 1px solid $target_bgColor;
             
             transition: .75s;
             transform: rotateY(0);
 
             svg {
-                fill: #fff;
+                fill: $target_svgColor;
             }
 
             &.show {
@@ -124,7 +92,7 @@ button {
             }
 
             &.remain{
-                color: rgb(75, 75, 75);
+                color: $target_svgColor;
                 background-color: $solution_bgColor
             }
 
@@ -143,14 +111,14 @@ button {
     .rows {
         display: flex;
         flex-direction: column-reverse;
-        gap: $gaping;
+        gap: $row_gapping;
         margin-bottom: $pickerbox_height;
 
         .row {
 
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: $gaping;
+            gap: $row_gapping;
         
             opacity: .5;
         
@@ -168,7 +136,7 @@ button {
         
                 svg {
                     animation: blink 2s infinite;
-                    fill: $target_bgColor;
+                    fill: $solution_svgColor;
                 }
         
                 &.colorful {
@@ -184,7 +152,7 @@ button {
         
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
-                gap: $gaping;
+                gap: $row_gapping;
         
                 .square {
                     background-color: $solution_bgColor;
@@ -197,21 +165,21 @@ button {
                         font-size: 1rem;
         
                         position: absolute;
-                        bottom: $gaping*2;
-                        right: $gaping*2;
+                        bottom: $row_gapping;
+                        right: $row_gapping;
                     }
                 }
             }
         
             .result {
-                padding: $gaping;
+                padding: $row_gapping;
         
                 grid-column-start: 5;
                 grid-column-end: 6;
         
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
-                gap: $gaping;
+                gap: calc($row_gapping/2);
         
                 transition: .5s;
                 transform: scale(.75) rotate(180deg);
@@ -223,17 +191,20 @@ button {
         
                 .square {
         
-                    border-radius: .5rem;
+                    border-radius: .25rem;
                     border: 1px solid $solution_bgColor;
         
                     &.wrong {
                         background-color: $wrong_color;
+                        border-color: $background_color;
                     }
                     &.correct {
                         background-color: $correct_color;
+                        border-color: $background_color;
                     }
                     &.exact {
                         background-color: $exact_color;
+                        border-color: $background_color;
                     }
                 }
             }
@@ -242,16 +213,21 @@ button {
 
     .pickerbox {
 
+        max-width: $board_width;
+        width: 100%;
+
         position: fixed;
         bottom: 0;
         left: 50%;
         transform: translate(-50%, 0);
     
         border: 1px solid $border_color;
-        padding: $gaping*4;
+        border-bottom: none;
+
+        padding: $row_gapping*2;
         border-radius: .5rem .5rem 0 0;
-        background-color: rgba(#fff, 0.75);
-        // backdrop-filter: blur(2px);
+        background-color: rgba($background_color, 0.8);
+        backdrop-filter: blur(2px);
 
         z-index: 99;
         transition: .5s;
@@ -259,11 +235,11 @@ button {
         .restart_actions{
             .restart{
                 height: $square_width;
-                width: $square_width*8;
+                width: 100%;
                 background-color: $check_bgColor;
                 color: #fff;
                 font-size: 1.2rem;
-                border-radius: $gaping;
+                border-radius: .5rem;
                 cursor: pointer;
             }
 
@@ -271,40 +247,39 @@ button {
                 text-align: center;
                 margin-top: 0;
 
-                color: rgb(50, 50, 50);
+                color: $text_color;
             }
         }
 
         .game_actions {
-                    
-            display: flex;
-            gap: $gaping;
-
-            .square {
-                width: $square_width;
-                height: $square_width;
-        
-                border-radius: .5rem;
-                cursor: pointer;
-                border: 2px solid #fff;
-                outline: 1px solid $solution_bgColor;
-            }
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: $row_gapping;
 
             .colors {
+                grid-column-start: 1;
+                grid-column-end: 6;
+
                 display: grid;
                 grid-template-columns: repeat(5, 1fr);
-                gap: $gaping;
+                gap: $row_gapping;
             }
         
             .actions {
+                grid-column-start: 6;
+                grid-column-end: 8;
+
                 display: grid;
                 grid-template-columns: repeat(1, 1fr);
-                gap: $gaping;
+                gap: $row_gapping;
         
                 .action {
         
+                    aspect-ratio: unset;
+
                     svg {
                         fill: #fff;
+                        position: absolute;
                     }
         
                     &.done {
@@ -319,7 +294,7 @@ button {
                         }
 
                         svg {
-                            width: 1.5rem;
+                            width: 1.75rem;
                         }
                     }
         
@@ -327,14 +302,17 @@ button {
                         background-color: $solution_bgColor;
 
                         svg {
-                            width: 2.25rem;
+                            width: 2.5rem;
                         }
                     }
                 }
-        
-                .square{
-                    width: $square_width*1.5;
-                }
+            }
+
+            .square {
+                border-radius: .5rem;
+                cursor: pointer;
+                border: 2px solid $background_color;
+                outline: 1px solid $solution_bgColor;
             }
         }
     }

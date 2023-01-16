@@ -15,7 +15,7 @@
     }
 
     ul, .note {
-        color: #616161;
+        color: rgba($text_color, $alpha: .75);
     }
 
     ul {
@@ -24,7 +24,7 @@
     }
 
     .divider {
-        border-bottom: 1px solid $solution_bgColor;
+        border-bottom: 1px solid $border_color;
         margin: 1rem 0;
     }
 

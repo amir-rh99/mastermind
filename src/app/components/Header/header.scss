@@ -1,0 +1,51 @@
+@import "../../styles/variabels.scss";
+
+.header {
+    height: $header_height;
+    background-color: $header_bgColor;
+    border-bottom: 1px solid $border_color;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .container {
+        display: flex;
+        max-width: $board_width;
+        width: 100%;
+        padding: 0 1rem;
+    }
+
+    h1 {
+        flex-grow: 2;
+        display: flex;
+        justify-content: center;
+    }
+
+    .menu{
+        display: flex;
+        gap: .75rem;
+    }
+
+    .icon {
+        display: flex;
+        cursor: pointer;
+
+        svg {
+            width: 2rem;
+            fill: $header_svgColor;
+        }
+
+        &.theme {
+            transition: .2s;
+
+            &:hover {
+                transform: rotate(30deg);
+            }
+        }
+    }
+    
+    .restart svg {
+        fill: $wrong_color;
+    }
+}
