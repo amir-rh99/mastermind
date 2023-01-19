@@ -1,7 +1,13 @@
+import { useContext } from "react";
 import "./About.scss";
 import { ReactComponent as GithubSvg } from "@svg/github.svg";
+import { ReactComponent as GithubWhiteSvg } from "@svg/githubWhite.svg";
+import { GameContext } from "@app/store/GameContext";
 
 const About = () => {
+    
+    const { theme } = useContext(GameContext)
+
     return(
         <div className="about">
             <h2 className="title">
@@ -63,7 +69,11 @@ const About = () => {
 
             <div className="github">
                 <a href="https://github.com/amir-rh99/mastermind" target="_blank">
-                <GithubSvg />
+                    {
+                        theme == "dark" ?
+                        <GithubWhiteSvg /> :
+                        <GithubSvg />
+                    }
                 </a>
             </div>
         </div>

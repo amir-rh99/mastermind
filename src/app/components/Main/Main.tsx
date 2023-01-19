@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react"
 import { Board, Header } from "../"
 import { GameContext } from "@app/store/GameContext"
 import { ActionTypes } from "@app/store/game.actions"
+import { Config } from "@app/core/game.config";
 
 type KeyType = "right" | "left" | "enter" | "back" | "number" | null
 
@@ -26,12 +27,10 @@ const Main = () => {
         });
         
         calculateDocumentSize()
+        // checkAppTheme()
 
         window.addEventListener("resize", calculateDocumentSize)
         window.addEventListener("keyup", handleKeyEvent)
-
-        // if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) checkAppTheme
-        // window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', checkAppTheme);
         
         return ()=> {
             window.removeEventListener('keyup', handleKeyEvent)
@@ -39,6 +38,16 @@ const Main = () => {
         }
     }, [])
 
+    const checkAppTheme = () => {
+        let theme: "dark" | "light" = "light";
+        const LocalStorageTheme = localStorage.getItem(Config.GameStorageThemeName)
+
+        if(LocalStorageTheme && LocalStorageTheme == "dark") theme = "dark"
+        else if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) theme = "dark"
+
+        localStorage.setItem(Config.GameStorageThemeName, theme)
+        document.body.setAttribute("data-theme", theme)
+    }
 
     const calculateDocumentSize = () => {
         const docHeight: number = document.documentElement.clientHeight || window.innerHeight

@@ -9,10 +9,6 @@ const Board = () => {
     
     const rows = [...new Array(game.currentGame?.model.chance)]
 
-    useEffect(()=>{
-        LocalStorage().write(game)
-    }, [game])
-
     const BoardRows = 
     rows.map((row, index) => 
         <BoardRow 

@@ -20,6 +20,7 @@ export interface IGame {
 
 type RowColor = string | undefined
 
+export type ThemeMode = "dark" | "light"
 export interface IGameStorageData {
     currentGame: IGame | null
     currentGameData: {
@@ -39,6 +40,7 @@ export type GameStorageDataKey = keyof IGameStorageData
 
 export interface IConfig {
     GameStorageName: string
+    GameStorageThemeName: string
     GameModels: {
         [key in GameModelType]: IGameModel
     }

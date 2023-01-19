@@ -3,6 +3,7 @@ import "./header.scss";
 import { GameContext } from "@app/store/GameContext"
 import { ActionTypes } from "@app/store/game.actions"
 import { Modal, About } from "@app/components"
+import { ThemeMode } from "@app/core/types";
 
 import { ReactComponent as RestartSvg } from "@svg/restart.svg";
 import { ReactComponent as HelpSvg } from "@svg/help.svg";
@@ -11,9 +12,8 @@ import { ReactComponent as LightSvg } from "@svg/light.svg";
 
 const Header = () => {
 
-    const { dispatch } = useContext(GameContext)
+    const { dispatch, theme, setTheme } = useContext(GameContext)
     const [modal, setModal] = useState(false)
-    const [theme, setTheme] = useState("dark")
 
     useEffect(() => {
         const isFirstTime = localStorage.getItem("mastermind_visited")
@@ -22,13 +22,8 @@ const Header = () => {
             setModal(true)
         }
     }, [])
-
-    const toggleTheme = () => {
-        let newTheme = theme == "dark" ? "light" : "dark"
-        document.body.setAttribute("data-theme", theme)
-        setTheme(newTheme)
-    }
-
+    
+    const toggleTheme = () => setTheme(theme == "dark" ? "light" : "dark")
     const handleRestart = () => dispatch({ type: ActionTypes.Restart })
 
     return(
@@ -45,7 +40,7 @@ const Header = () => {
                 <span className="icon theme"
                 onClick={toggleTheme}>
                     {
-                        theme == "dark" ?
+                        theme == "light" ?
                         <DarkSvg /> :
                         <LightSvg />
                     }

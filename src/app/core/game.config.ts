@@ -2,6 +2,7 @@ import { IConfig, IGameStorageData } from "./types"
 
 const Config: IConfig = {
     GameStorageName: "mastermind_data",
+    GameStorageThemeName: "mastermind_theme",
     GameModels: {
         "model_1": {
             size: 3,
