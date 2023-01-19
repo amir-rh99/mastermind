@@ -45,7 +45,7 @@
     background-color: #fff;
     align-self: center;
 
-    background: rgba($background_color, .85);
+    background: rgba($background_color_code, .85);
     border-radius: .5rem;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     border: 1px solid $border_color;
@@ -75,7 +75,7 @@
     justify-content: center;
 
     &:hover{
-        background-color: rgba( $target_bgColor, $alpha: .75);
+        background-color: rgba($target_bgColor_code, .75);
     }
     svg{
         fill: #fff;

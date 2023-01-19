@@ -1,8 +1,6 @@
+@import "./root.css";
 @import "./variabels.scss";
 
-:root {
-    --theme: "light";
-}
 html {
     @media screen and (max-width: 768px) {
         font-size: 15px;
@@ -226,7 +224,7 @@ button {
 
         padding: $row_gapping*2;
         border-radius: .5rem .5rem 0 0;
-        background-color: rgba($background_color, 0.8);
+        background-color: rgba($background_color_code, 0.8);
         backdrop-filter: blur(2px);
 
         z-index: 99;

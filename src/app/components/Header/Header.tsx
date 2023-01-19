@@ -25,6 +25,7 @@ const Header = () => {
 
     const toggleTheme = () => {
         let newTheme = theme == "dark" ? "light" : "dark"
+        document.body.setAttribute("data-theme", theme)
         setTheme(newTheme)
     }
 

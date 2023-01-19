@@ -1,0 +1,31 @@
+:root {
+    --background_color: 245,245,245;
+    --header_bgColor: 255, 255, 255;
+    --header_svgColor: 75,75,75;
+
+    --solution_bgColor: 200, 200, 200;
+    --target_bgColor: 100,100,100;
+    --solution_svgColor: 100,100,100;
+    --target_svgColor: 250,250,250;
+
+    --border_color: 225,225,225;
+
+    --title_color: 50,50,50;
+    --text_color: 75,75,75;
+}
+
+[data-theme="dark"]{
+    --background_color: 40, 45, 52;
+    --header_bgColor: 33, 37, 43;
+    --header_svgColor: 175,175,175;
+
+    --solution_bgColor: 143, 144, 167;
+    --target_bgColor: 85, 88, 112;
+    --solution_svgColor: 250,250,250;
+    --target_svgColor: 250,250,250;
+
+    --border_color: 61, 67, 75;
+    
+    --title_color: 215,215,215;
+    --text_color: 175,175,175;
+}

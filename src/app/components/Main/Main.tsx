@@ -19,15 +19,26 @@ const Main = () => {
     const { dispatch } = useContext(GameContext)
 
     useEffect(() => {
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            const newColorScheme = event.matches ? "dark" : "light";
+            console.log(newColorScheme, " ****x");
+            
+        });
+        
         calculateDocumentSize()
+
         window.addEventListener("resize", calculateDocumentSize)
         window.addEventListener("keyup", handleKeyEvent)
+
+        // if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) checkAppTheme
+        // window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', checkAppTheme);
         
         return ()=> {
             window.removeEventListener('keyup', handleKeyEvent)
             window.removeEventListener("resize", calculateDocumentSize)
         }
     }, [])
+
 
     const calculateDocumentSize = () => {
         const docHeight: number = document.documentElement.clientHeight || window.innerHeight
