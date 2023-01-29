@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { GameContext } from "@app/store/GameContext"
 import { ActionTypes } from "@app/store/game.actions"
 
@@ -13,6 +13,16 @@ const SolutionItem = ({ solutionIndex, rowIndex }: ISolutionItemProps) => {
 
     const { game, dispatch } = useContext(GameContext)
     const gameData = game.currentGameData
+    const [ colorError, setColorError ] = useState(false)
+
+    useEffect(() => {
+        if(game.event?.type == "SET_COLOR_ERROR" && solutionIndex == game.event.data){            
+            setColorError(true)
+            setTimeout(() => {
+                setColorError(false)
+            }, 1000)
+        }
+    }, [game.event])
     
     const {
         index: activeRowIndex,
@@ -49,7 +59,7 @@ const SolutionItem = ({ solutionIndex, rowIndex }: ISolutionItemProps) => {
     }
 
     return(
-        <div className={`square ${solutionItemClass} ${solutionColor ? 'colorful' : ""}`}
+        <div className={`square ${solutionItemClass} ${solutionColor ? 'colorful' : ""} ${inActiveRow && colorError ? 'error' : ''}`}
         style={{backgroundColor: solutionColor}}
         onClick={setSolutionItemToActive}>
             {

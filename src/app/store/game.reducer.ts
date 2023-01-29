@@ -1,4 +1,4 @@
-import { IGameStorageData, IUserSolution } from "../core/types"
+import { IGameStorageData, IUserSolution, RowColor } from "../core/types"
 import { GameActions, ActionTypes } from "./game.actions";
 import { getGame } from "../core/game.controller"
 
@@ -17,9 +17,23 @@ const GameReducer = (state: IGameStorageData, action: GameActions): IGameStorage
                 if(isRowFull) return state;
 
                 const color = action.payload
+
+                const isDuplicated = isDuplicateColor(color, gameData.currentRow.colors)
+
+                if(isDuplicated.result){
+                    return {
+                        ...state,
+                        event: {
+                            type: "SET_COLOR_ERROR",
+                            data: isDuplicated.index
+                        }
+                    }
+                }
+
                 const activeSolutionColumn = gameData.currentRow.activeColumn
                 gameData.currentRow.colors[activeSolutionColumn] = color
                 
+
                 return {
                     ...state,
                     currentGameData: gameData
@@ -47,6 +61,8 @@ const GameReducer = (state: IGameStorageData, action: GameActions): IGameStorage
                 
                 let index = activeColumnIndex
                 
+                if(currentSolutionColors[index] === undefined) return state;
+
                 // check for next squares
                 for (let i = activeColumnIndex + 1; i < gameSize; i++) {
                     if(currentSolutionColors[i] === undefined){
@@ -84,6 +100,19 @@ const GameReducer = (state: IGameStorageData, action: GameActions): IGameStorage
 
                 const colorIndex = action.payload
                 const color = state.colors[colorIndex]
+
+                const isDuplicated = isDuplicateColor(color, gameData.currentRow.colors)
+
+                if(isDuplicated.result){
+                    return {
+                        ...state,
+                        event: {
+                            type: "SET_COLOR_ERROR",
+                            data: isDuplicated.index
+                        }
+                    }
+                }
+
                 const activeSolutionColumn = gameData.currentRow.activeColumn
                 gameData.currentRow.colors[activeSolutionColumn] = color
                 
@@ -210,6 +239,15 @@ const GameReducer = (state: IGameStorageData, action: GameActions): IGameStorage
 
         default:
         return state
+    }
+}
+
+const isDuplicateColor = (color: string, colors: RowColor[]): { result: boolean, index: number } => {    
+    const index: number = colors.findIndex(c => c === color)
+    
+    return {
+        result: index === -1 ? false : true,
+        index
     }
 }
 

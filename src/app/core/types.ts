@@ -18,7 +18,7 @@ export interface IGame {
     createdAt: Date
 }
 
-type RowColor = string | undefined
+export type RowColor = string | undefined
 
 export type ThemeMode = "dark" | "light"
 export interface IGameStorageData {
@@ -33,7 +33,11 @@ export interface IGameStorageData {
         },
         status: "pending" | "lose" | "win"
     }
-    colors: string[]
+    colors: string[],
+    event?: {
+        type: "SET_COLOR_ERROR" | null
+        data: number
+    } 
 }
 
 export type GameStorageDataKey = keyof IGameStorageData

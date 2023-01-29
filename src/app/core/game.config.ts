@@ -44,6 +44,9 @@ const InitialData: IGameStorageData = {
         status: "pending"
     },
     colors: Config.Colors,
+    event: {
+        type: null, data: 0
+    }
 }
 
 export {

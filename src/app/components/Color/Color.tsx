@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { GameContext } from "@app/store/GameContext"
 import { ActionTypes } from "@app/store/game.actions"
 
@@ -10,7 +10,7 @@ interface IColorProps {
 const Color = ({ color, index }: IColorProps) => {
 
     const { dispatch } = useContext(GameContext)
-
+    
     const handleColorSelect = () => {
         dispatch({
             type: ActionTypes.SetColor,
