@@ -26,9 +26,11 @@ export function useKeyboard({ dispatch, pickColorByIndex }: KeyboardOptions) {
           dispatch({ type: "MOVE_COLUMN", direction: "right" })
           break
         case "Backspace":
+          e.preventDefault()
           dispatch({ type: "BACKSPACE" })
           break
         case "Enter":
+          e.preventDefault()
           dispatch({ type: "SUBMIT_GUESS" })
           break
       }
