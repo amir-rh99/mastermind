@@ -12,7 +12,7 @@ export function Board() {
     <>
       {status === "won" && <Celebrate />}
 
-      <div className="max-w-[30rem] mx-auto p-4 flex flex-col">
+      <div className="max-w-[30rem] mx-auto px-4 py-2 flex flex-col">
         <Target />
 
         <div className="flex flex-col-reverse gap-2 mb-40">

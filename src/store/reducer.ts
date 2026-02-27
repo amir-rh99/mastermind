@@ -88,7 +88,9 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       let col = currentRow.activeColumn
 
       if (currentRow.isFull) {
-        col = model.size - 1
+        // user manually selected a valid slot: clear that one
+        // otherwise (cursor is past the end): clear last slot
+        col = col < model.size ? col : model.size - 1
         colors[col] = null
       } else if (colors[col] !== null) {
         colors[col] = null

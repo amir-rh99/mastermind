@@ -11,10 +11,10 @@ export function Target() {
   const remaining = model.chances - guesses.length
 
   return (
-    <div className="mb-4 sticky top-2 z-[9] flex flex-col gap-1">
+    <div className="mb-4 sticky top-2 z-9 flex flex-col gap-1">
       {/* timer */}
       {settings.showTimer && (
-        <div className="flex items-center justify-center gap-1.5 text-theme-text/60 text-sm">
+        <div className="flex items-center pb-1 justify-center gap-1.5 text-theme-text/60 text-sm">
           <Timer size={14} />
           <span className="tabular-nums w-[3.5ch] text-center">{formatted}</span>
         </div>
@@ -32,7 +32,7 @@ export function Target() {
               key={i}
               className={cn(
                 "square rounded-2xl border-2 border-theme-bg outline-1 outline-theme-surface-dark transition-transform duration-700",
-                isRevealed ? "[transform:rotateY(360deg)]" : "bg-theme-surface-dark",
+                isRevealed ? "transform-[rotateY(360deg)]" : "bg-theme-surface-dark",
               )}
               style={isRevealed ? { backgroundColor: color } : undefined}
               onClick={() => dispatch({ type: "SET_ACTIVE_COLUMN", column: i })}

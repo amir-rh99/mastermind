@@ -64,7 +64,7 @@ export function BoardRow({ rowIndex }: BoardRowProps) {
                 )}
               />
             )}
-            {colorIndex >= 0 && !isActiveSlot && (
+            {colorIndex >= 0 && (
               <span className="text-base absolute bottom-1 right-1">{colorIndex}</span>
             )}
           </button>
