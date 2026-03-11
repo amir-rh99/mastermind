@@ -1,4 +1,4 @@
-import type { Difficulty } from "@/types"
+import type { Difficulty, Settings } from "@/types"
 
 export type GameAction =
   | { type: "PICK_COLOR"; color: string }
@@ -8,4 +8,4 @@ export type GameAction =
   | { type: "BACKSPACE" }
   | { type: "SUBMIT_GUESS" }
   | { type: "TICK_TIMER" }
-  | { type: "RESTART"; difficulty?: Difficulty; allowDuplicateTarget?: boolean }
+  | { type: "RESTART"; difficulty?: Difficulty; settings?: Settings }

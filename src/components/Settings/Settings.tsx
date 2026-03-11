@@ -1,6 +1,6 @@
 import { useGame } from "@/hooks"
-import { cn, DEFAULT_SETTINGS } from "@/lib"
-import { FlaskConical, Moon, RotateCcw, Sun } from "lucide-react"
+import { cn, BONUS_CHANCES } from "@/lib"
+import { FlaskConical, Moon, RotateCcw, Sun, RotateCw } from "lucide-react"
 
 export function Settings() {
   const { settings, updateSettings, dispatch, theme, toggleTheme, game } = useGame()
@@ -8,22 +8,31 @@ export function Settings() {
   const targetHasDuplicates = new Set(game.target).size !== game.target.length
 
   const handleDuplicateTargetChange = (v: boolean) => {
-    updateSettings({
+    const newSettings = {
+      ...settings,
       allowDuplicateTarget: v,
-      // also enable duplicate guesses
       ...(v ? { allowDuplicateColors: true } : {}),
-    })
-    dispatch({ type: "RESTART", allowDuplicateTarget: v })
+    }
+    updateSettings(newSettings)
+    dispatch({ type: "RESTART", settings: newSettings })
   }
 
   const handleDuplicateGuessChange = (v: boolean) => {
     if (!v && targetHasDuplicates) return
-    updateSettings({ allowDuplicateColors: v })
+    const newSettings = { ...settings, allowDuplicateColors: v }
+    updateSettings(newSettings)
+    dispatch({ type: "RESTART", settings: newSettings })
   }
 
   const handleReset = () => {
-    updateSettings(DEFAULT_SETTINGS)
-    dispatch({ type: "RESTART", allowDuplicateTarget: DEFAULT_SETTINGS.allowDuplicateTarget })
+    const defaults = {
+      autoScroll: true,
+      allowDuplicateColors: false,
+      allowDuplicateTarget: false,
+      showTimer: true,
+    }
+    updateSettings(defaults)
+    dispatch({ type: "RESTART", settings: defaults })
   }
 
   const dupGuessLocked = targetHasDuplicates
@@ -62,29 +71,83 @@ export function Settings() {
 
         <hr className="border-theme-border" />
 
-        <div className="flex items-center gap-2 text-theme-text/50">
-          <FlaskConical size={16} />
-          <span className="text-sm">Advanced Rules</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-theme-text/50">
+            <FlaskConical size={16} />
+            <span className="text-sm">Advanced Rules</span>
+          </div>
+          <span className="flex items-center gap-1 text-[11px] text-theme-text/30">
+            <RotateCw size={10} />
+            Restarts game
+          </span>
         </div>
 
-        <ToggleRow
-          label="Duplicate guesses"
-          description={
-            dupGuessLocked
-              ? "Required — target contains duplicate colors"
-              : "Use the same color more than once in a guess. Makes the game easier since you can test colors individually."
-          }
-          checked={settings.allowDuplicateColors}
-          onChange={handleDuplicateGuessChange}
-          disabled={dupGuessLocked}
-        />
+        {/* duplicate guesses */}
+        <div className={cn("flex flex-col gap-1", dupGuessLocked && "opacity-50")}>
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-theme-title text-base m-0">Duplicate guesses</p>
+            <ToggleSwitch
+              checked={settings.allowDuplicateColors}
+              onChange={handleDuplicateGuessChange}
+              disabled={dupGuessLocked}
+            />
+          </div>
+          {dupGuessLocked ? (
+            <p className="text-theme-text/40 text-sm m-0 font-extralight">
+              Required — target contains duplicate colors.
+            </p>
+          ) : (
+            <div className="flex flex-col gap-0.5 text-sm font-extralight">
+              <p
+                className={cn(
+                  "m-0",
+                  settings.allowDuplicateColors ? "text-exact/80" : "text-theme-text/25",
+                )}
+              >
+                <span className="font-bold">ON:</span> Same color allowed multiple times
+              </p>
+              <p
+                className={cn(
+                  "m-0",
+                  !settings.allowDuplicateColors ? "text-exact/80" : "text-theme-text/25",
+                )}
+              >
+                <span className="font-bold">OFF:</span> Each color once per guess, +
+                {BONUS_CHANCES.noDuplicateGuess} guesses
+              </p>
+            </div>
+          )}
+        </div>
 
-        <ToggleRow
-          label="Duplicate target"
-          description="The secret code may contain the same color twice. Significantly harder — you get +2 extra guesses. Restarts the game."
-          checked={settings.allowDuplicateTarget}
-          onChange={handleDuplicateTargetChange}
-        />
+        {/* duplicate target */}
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-theme-title text-base m-0">Duplicate target</p>
+            <ToggleSwitch
+              checked={settings.allowDuplicateTarget}
+              onChange={handleDuplicateTargetChange}
+            />
+          </div>
+          <div className="flex flex-col gap-0.5 text-sm font-extralight">
+            <p
+              className={cn(
+                "m-0",
+                !settings.allowDuplicateTarget ? "text-exact/80" : "text-theme-text/25",
+              )}
+            >
+              <span className="font-bold">OFF:</span> All unique colors — classic mode
+            </p>
+            <p
+              className={cn(
+                "m-0",
+                settings.allowDuplicateTarget ? "text-exact/80" : "text-theme-text/25",
+              )}
+            >
+              <span className="font-bold">ON:</span> Code may repeat colors, +
+              {BONUS_CHANCES.duplicateTarget} guesses
+            </p>
+          </div>
+        </div>
 
         <hr className="border-theme-border" />
 
@@ -100,39 +163,50 @@ export function Settings() {
   )
 }
 
-interface ToggleRowProps {
-  label: string
-  description: string
+interface ToggleSwitchProps {
   checked: boolean
   onChange: (value: boolean) => void
   disabled?: boolean
 }
 
-function ToggleRow({ label, description, checked, onChange, disabled }: ToggleRowProps) {
+function ToggleSwitch({ checked, onChange, disabled }: ToggleSwitchProps) {
   return (
-    <div className={cn("flex items-center justify-between gap-3", disabled && "opacity-50")}>
+    <button
+      role="switch"
+      aria-checked={checked}
+      disabled={disabled}
+      onClick={() => !disabled && onChange(!checked)}
+      className={cn(
+        "relative w-11 h-6 rounded-full transition-colors duration-200 shrink-0",
+        checked ? "bg-exact" : "bg-theme-surface",
+        disabled && "cursor-not-allowed",
+      )}
+    >
+      <span
+        className={cn(
+          "absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform duration-200",
+          checked && "translate-x-5",
+        )}
+      />
+    </button>
+  )
+}
+
+interface ToggleRowProps {
+  label: string
+  description: string
+  checked: boolean
+  onChange: (value: boolean) => void
+}
+
+function ToggleRow({ label, description, checked, onChange }: ToggleRowProps) {
+  return (
+    <div className="flex items-center justify-between gap-3">
       <div className="flex-1">
         <p className="text-theme-title text-base m-0">{label}</p>
         <p className="text-theme-text/60 text-sm m-0 font-extralight">{description}</p>
       </div>
-      <button
-        role="switch"
-        aria-checked={checked}
-        disabled={disabled}
-        onClick={() => !disabled && onChange(!checked)}
-        className={cn(
-          "relative w-11 h-6 rounded-full transition-colors duration-200 shrink-0",
-          checked ? "bg-exact" : "bg-theme-surface",
-          disabled && "cursor-not-allowed",
-        )}
-      >
-        <span
-          className={cn(
-            "absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform duration-200",
-            checked && "translate-x-5",
-          )}
-        />
-      </button>
+      <ToggleSwitch checked={checked} onChange={onChange} />
     </div>
   )
 }

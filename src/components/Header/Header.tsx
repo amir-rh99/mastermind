@@ -3,7 +3,7 @@ import { Modal } from "@/components/Modal/Modal"
 import { Settings } from "@/components/Settings/Settings"
 import { StatsPanel } from "@/components/Stats/StatsPanel"
 import { useGame } from "@/hooks"
-import { HelpCircle, RotateCcw, SlidersHorizontal } from "lucide-react"
+import { BarChart3, HelpCircle, RotateCcw, SlidersHorizontal } from "lucide-react"
 import { useEffect, useState } from "react"
 
 export function Header() {
@@ -37,7 +37,7 @@ export function Header() {
           <h1 className="m-0 text-xl text-theme-title tracking-wide">MasterMind</h1>
 
           <div className="flex items-center justify-end gap-2">
-            {/* <button
+            <button
               onClick={() => setShowStats(true)}
               aria-label="Stats"
               className="relative flex cursor-pointer text-theme-icon hover:text-theme-title transition-colors"
@@ -48,7 +48,7 @@ export function Header() {
                   {currentStreak}
                 </span>
               )}
-            </button> */}
+            </button>
 
             <button
               onClick={() => setShowSettings(true)}

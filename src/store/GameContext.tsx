@@ -42,7 +42,7 @@ function getInitialGame(): GameState {
   if (saved && saved.status === "playing") {
     return { ...saved, elapsedMs: 0 }
   }
-  return createGame("normal")
+  return createGame("normal", DEFAULT_SETTINGS)
 }
 
 function getInitialSettings(): Settings {
@@ -153,18 +153,16 @@ export function GameProvider({ children }: PropsWithChildren) {
     setStreak(getDefaultStreak())
   }, [])
 
+  // auto-inject current settings into RESTART
   const wrappedDispatch: Dispatch<GameAction> = useCallback(
     (action) => {
       if (action.type === "RESTART") {
-        dispatch({
-          ...action,
-          allowDuplicateTarget: action.allowDuplicateTarget ?? settings.allowDuplicateTarget,
-        })
+        dispatch({ ...action, settings: action.settings ?? settings })
       } else {
         dispatch(action)
       }
     },
-    [settings.allowDuplicateTarget],
+    [settings],
   )
 
   const currentStreak = computeStreak(streak.winDates, streak.freezeUsedDates)

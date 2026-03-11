@@ -13,17 +13,16 @@ export const COLORS = [
   "#607D8B",
 ] as const
 
-export const DIFFICULTY_MODELS: Record<Difficulty, GameModel> = {
+export const BASE_MODELS: Record<Difficulty, GameModel> = {
   easy: { size: 3, chances: 8 },
   normal: { size: 4, chances: 8 },
   hard: { size: 5, chances: 10 },
 }
 
-// +2 chances for duplicate target
-export const DIFFICULTY_MODELS_DUP: Record<Difficulty, GameModel> = {
-  easy: { size: 3, chances: 10 },
-  normal: { size: 4, chances: 10 },
-  hard: { size: 5, chances: 12 },
+// extra chances for harder modes
+export const BONUS_CHANCES = {
+  duplicateTarget: 2,
+  noDuplicateGuess: 2,
 }
 
 export const STORAGE_KEYS = {

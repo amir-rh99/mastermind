@@ -2,7 +2,6 @@ import { COLORS, createEmptyRow, createGame, evaluateGuess, findNextEmptyColumn 
 import type { GameState } from "@/types"
 import type { GameAction } from "./actions"
 
-// start timer on first move
 function ensureTimerStarted(state: GameState): GameState {
   if (state.startedAt !== 0) return state
   return { ...state, startedAt: Date.now() }
@@ -88,8 +87,6 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       let col = currentRow.activeColumn
 
       if (currentRow.isFull) {
-        // user manually selected a valid slot: clear that one
-        // otherwise (cursor is past the end): clear last slot
         col = col < model.size ? col : model.size - 1
         colors[col] = null
       } else if (colors[col] !== null) {
@@ -152,8 +149,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
 
     case "RESTART": {
       const difficulty = action.difficulty ?? state.difficulty
-      const allowDup = action.allowDuplicateTarget ?? false
-      return createGame(difficulty, allowDup)
+      return createGame(difficulty, action.settings)
     }
 
     default:

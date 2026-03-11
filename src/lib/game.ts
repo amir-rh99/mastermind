@@ -1,5 +1,13 @@
-import type { CurrentRow, Difficulty, GameState, Guess, HintStatus } from "@/types"
-import { COLORS, DIFFICULTY_MODELS, DIFFICULTY_MODELS_DUP } from "./constants"
+import type {
+  CurrentRow,
+  Difficulty,
+  GameModel,
+  GameState,
+  Guess,
+  HintStatus,
+  Settings,
+} from "@/types"
+import { BASE_MODELS, BONUS_CHANCES, COLORS } from "./constants"
 
 function pickUniqueColors(count: number): string[] {
   const pool = [...COLORS]
@@ -11,15 +19,12 @@ function pickUniqueColors(count: number): string[] {
 }
 
 function pickColorsWithDuplicates(count: number): string[] {
-  // start with random colors
   const result = Array.from(
     { length: count },
     () => COLORS[Math.floor(Math.random() * COLORS.length)],
   )
 
-  // if no duplicates by chance, force one
   if (new Set(result).size === result.length) {
-    // pick a random slot and copy a different slot's color into it
     const src = Math.floor(Math.random() * count)
     let dest = Math.floor(Math.random() * (count - 1))
     if (dest >= src) dest++
@@ -29,10 +34,29 @@ function pickColorsWithDuplicates(count: number): string[] {
   return result
 }
 
-export function createGame(difficulty: Difficulty, allowDuplicateTarget = false): GameState {
-  const models = allowDuplicateTarget ? DIFFICULTY_MODELS_DUP : DIFFICULTY_MODELS
-  const model = models[difficulty]
-  const target = allowDuplicateTarget
+function buildModel(difficulty: Difficulty, settings: Settings): GameModel {
+  const base = BASE_MODELS[difficulty]
+  let extra = 0
+
+  if (settings.allowDuplicateTarget) extra += BONUS_CHANCES.duplicateTarget
+  if (!settings.allowDuplicateColors && !settings.allowDuplicateTarget)
+    extra += BONUS_CHANCES.noDuplicateGuess
+
+  return { ...base, chances: base.chances + extra }
+}
+
+export function createGame(difficulty: Difficulty, customSettings?: Settings): GameState {
+  const defaults = {
+    autoScroll: true,
+    allowDuplicateColors: false,
+    allowDuplicateTarget: false,
+    showTimer: true,
+  }
+
+  const settings = customSettings || defaults
+
+  const model = buildModel(difficulty, settings)
+  const target = settings.allowDuplicateTarget
     ? pickColorsWithDuplicates(model.size)
     : pickUniqueColors(model.size)
 
@@ -61,7 +85,6 @@ export function evaluateGuess(guess: string[], target: string[]): Omit<Guess, "c
   const targetUsed = Array(size).fill(false)
   const guessUsed = Array(size).fill(false)
 
-  // exact matches
   for (let i = 0; i < size; i++) {
     if (guess[i] === target[i]) {
       exact++
@@ -70,7 +93,6 @@ export function evaluateGuess(guess: string[], target: string[]): Omit<Guess, "c
     }
   }
 
-  // misplaced colors
   for (let i = 0; i < size; i++) {
     if (guessUsed[i]) continue
     for (let j = 0; j < size; j++) {
