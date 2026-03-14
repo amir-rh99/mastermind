@@ -1,38 +1,44 @@
-import { COLORS } from "@/lib"
-import { Github, Keyboard, Lightbulb } from "lucide-react"
+import { BASE_MODELS, COLORS } from "@/lib"
+import { Github, Lightbulb } from "lucide-react"
 
 const C = {
-  purple: COLORS[1], // #9C27B0
-  blue: COLORS[2], // #3F51B5
-  cyan: COLORS[3], // #03A9F4
-  brown: COLORS[8], // #795548
-  gray: COLORS[9], // #607D8B
+  purple: COLORS[1],
+  blue: COLORS[2],
+  cyan: COLORS[3],
+  brown: COLORS[8],
+  gray: COLORS[9],
 }
 
-function Dot({ color, dim }: { color: string; dim?: boolean }) {
+function Dot({ color, label }: { color: string; label?: string }) {
   return (
     <span
-      className={`inline-block w-7 h-7 rounded-lg align-middle ${dim ? "opacity-40" : ""}`}
+      className="inline-flex items-center justify-center w-7 h-7 rounded-lg align-middle text-[9px] font-bold text-white/80 shrink-0"
       style={{ backgroundColor: color }}
-    />
+    >
+      {label}
+    </span>
   )
 }
 
 function HintDot({ type }: { type: "exact" | "correct" | "wrong" }) {
   const bg = type === "exact" ? "bg-exact" : type === "correct" ? "bg-correct" : "bg-wrong"
-  return <span className={`inline-block w-3.5 h-3.5 rounded-sm ${bg}`} />
+  return <span className={`inline-block w-3.5 h-3.5 rounded-sm shrink-0 ${bg}`} />
 }
 
 export function About() {
+  const normal = BASE_MODELS.normal
+
   return (
     <div>
       <h2 className="text-theme-title mb-1">How to Play</h2>
       <p className="about-text text-theme-text/60 mb-4">
-        A secret code of 4 colors is hidden. You have 8 attempts to crack it. After each guess,
-        hints tell you how close you are.
+        Crack the secret code of{" "}
+        <span className="text-theme-title font-bold">{normal.size} colors</span> in{" "}
+        <span className="text-theme-title font-bold">{normal.chances} guesses</span> or fewer. After
+        each guess, hints reveal how close you are.
       </p>
 
-      {/* example */}
+      {/* ─── Example ─── */}
       <div className="rounded-xl bg-theme-surface/15 p-4 mb-3">
         <p className="text-sm text-theme-text/50 m-0 mb-3 flex items-center gap-1.5">
           <Lightbulb size={14} />
@@ -43,10 +49,10 @@ export function About() {
         <div className="flex items-center gap-2 mb-2.5 pb-2.5 border-b border-theme-border/50">
           <span className="text-[11px] text-theme-text/35 w-11 shrink-0">Secret</span>
           <div className="flex gap-1.5">
-            <Dot color={C.cyan} />
-            <Dot color={C.purple} />
-            <Dot color={C.brown} />
-            <Dot color={C.blue} />
+            <Dot color={C.cyan} label="3" />
+            <Dot color={C.purple} label="1" />
+            <Dot color={C.brown} label="8" />
+            <Dot color={C.blue} label="2" />
           </div>
         </div>
 
@@ -54,10 +60,10 @@ export function About() {
         <div className="flex items-center gap-2 mb-3">
           <span className="text-[11px] text-theme-text/35 w-11 shrink-0">Guess</span>
           <div className="flex gap-1.5">
-            <Dot color={C.brown} />
-            <Dot color={C.purple} />
-            <Dot color={C.gray} />
-            <Dot color={C.cyan} />
+            <Dot color={C.brown} label="8" />
+            <Dot color={C.purple} label="1" />
+            <Dot color={C.gray} label="9" />
+            <Dot color={C.cyan} label="3" />
           </div>
           <span className="text-theme-text/20 mx-0.5">→</span>
           <div className="grid grid-cols-2 gap-1">
@@ -68,51 +74,38 @@ export function About() {
           </div>
         </div>
 
-        {/* breakdown */}
-        <div className="flex flex-col gap-1.5 text-xs text-theme-text/55 leading-snug">
-          <div className="flex items-center gap-2">
+        {/* breakdown — each hint type as a full-width row */}
+        <div className="flex flex-col gap-2.5 text-xs text-theme-text/55 leading-snug">
+          <div className="flex gap-2">
             <HintDot type="exact" />
-            <span>
-              <span className="text-exact font-bold">Exact</span> — <Dot color={C.purple} /> is the
-              right color in the right spot
-            </span>
+            <p className="m-0">
+              <span className="text-exact font-bold">Exact</span> — right color, right position.{" "}
+              <Dot color={C.purple} label="1" /> is in spot 2 in both rows.
+            </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2">
             <HintDot type="correct" />
-            <span>
-              <span className="text-correct font-bold">Misplaced</span> — <Dot color={C.brown} />{" "}
-              and <Dot color={C.cyan} /> are in the code but wrong position
-            </span>
+            <p className="m-0">
+              <span className="text-correct font-bold">Misplaced</span> — right color, wrong
+              position. <Dot color={C.brown} label="8" /> and <Dot color={C.cyan} label="3" /> are
+              in the code but need to move.
+            </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex gap-2">
             <HintDot type="wrong" />
-            <span>
-              <span className="text-wrong font-bold">Wrong</span> — <Dot color={C.gray} /> is not in
-              the code at all
-            </span>
+            <p className="m-0">
+              <span className="text-wrong font-bold">Wrong</span> — not in the code at all.{" "}
+              <Dot color={C.gray} label="9" /> can be eliminated.
+            </p>
           </div>
         </div>
       </div>
 
-      <p className="text-[11px] text-theme-text/30 mb-4">
-        Hints are shuffled — their position doesn't match your guess order.
+      <p className="text-[11px] text-theme-text/50 mb-4">
+        Hint positions are shuffled — they don't correspond to your guess order.
       </p>
 
-      {/* controls */}
-      <div className="rounded-xl bg-theme-surface/15 p-3 mb-3">
-        <p className="text-sm text-theme-text/50 m-0 mb-1 flex items-center gap-1.5">
-          <Keyboard size={14} />
-          Controls
-        </p>
-        <p className="text-xs text-theme-text/50 m-0 leading-relaxed">
-          <span className="text-theme-title">0–9</span> pick color ·{" "}
-          <span className="text-theme-title">← →</span> move ·{" "}
-          <span className="text-theme-title">⌫</span> delete ·{" "}
-          <span className="text-theme-title">↵</span> submit
-        </p>
-      </div>
-
-      {/* footer */}
+      {/* ─── Footer ─── */}
       <div className="text-center pt-1">
         <a
           href="https://github.com/amir-rh99/mastermind"

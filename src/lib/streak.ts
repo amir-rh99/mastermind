@@ -38,12 +38,21 @@ export function recordWin(data: StreakData): StreakData {
 
   const newFreezes = currentStreak > 0 && currentStreak % 5 === 0 ? data.freezes + 1 : data.freezes
 
-  return { ...data, winDates, freezes: newFreezes }
+  // keep only last 90 days of history to prevent unbounded growth
+  const cutoff = toLocalDateStr(addDays(new Date(), -90))
+  const trimmedWins = winDates.filter((d) => d >= cutoff)
+  const trimmedFreezes = data.freezeUsedDates.filter((d) => d >= cutoff)
+
+  return { ...data, winDates: trimmedWins, freezeUsedDates: trimmedFreezes, freezes: newFreezes }
 }
 
 export function computeStreak(winDates: string[], freezeUsedDates: string[]): number {
   const activeDates = new Set([...winDates, ...freezeUsedDates])
-  let current = startOfDay(new Date())
+  const today = startOfDay(new Date())
+  const todayStr = toLocalDateStr(today)
+
+  // start from today if it has activity, otherwise from yesterday
+  let current = activeDates.has(todayStr) ? today : addDays(today, -1)
   let streak = 0
 
   while (activeDates.has(toLocalDateStr(current))) {
@@ -55,7 +64,7 @@ export function computeStreak(winDates: string[], freezeUsedDates: string[]): nu
 }
 
 // auto-apply freeze on load if streak would break
-// Freeze protects YESTERDAY (a missed day)
+// Freeze protects YESTERDAY (a missed day), not today.
 // Only applies if: yesterday has no win/freeze, but the day before yesterday did.
 export function checkAndApplyFreeze(data: StreakData): StreakData {
   const yesterday = toLocalDateStr(addDays(new Date(), -1))

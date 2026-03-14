@@ -1,34 +1,26 @@
 import {
-  createContext,
-  useReducer,
-  useState,
-  useEffect,
-  useCallback,
-  useRef,
-  type PropsWithChildren,
-  type Dispatch,
-} from "react"
-import type {
-  GameState,
-  ThemeMode,
-  Difficulty,
-  Settings,
-  Stats,
-  GameRecord,
-  StreakData,
-} from "@/types"
-import type { GameAction } from "./actions"
-import { gameReducer } from "./reducer"
-import {
-  createGame,
-  storage,
-  STORAGE_KEYS,
-  DEFAULT_SETTINGS,
-  recordWin,
   checkAndApplyFreeze,
   computeStreak,
+  createGame,
+  DEFAULT_SETTINGS,
   getDefaultStreak,
+  recordWin,
+  storage,
+  STORAGE_KEYS,
 } from "@/lib"
+import type { GameRecord, GameState, Settings, Stats, StreakData, ThemeMode } from "@/types"
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+  type Dispatch,
+  type PropsWithChildren,
+} from "react"
+import type { GameAction } from "./actions"
+import { gameReducer } from "./reducer"
 
 function getInitialTheme(): ThemeMode {
   const stored = localStorage.getItem(STORAGE_KEYS.theme)
@@ -40,7 +32,8 @@ function getInitialTheme(): ThemeMode {
 function getInitialGame(): GameState {
   const saved = storage.get<GameState>(STORAGE_KEYS.game)
   if (saved && saved.status === "playing") {
-    return { ...saved, elapsedMs: 0 }
+    // reset timer so it starts fresh on reload
+    return { ...saved, elapsedMs: 0, startedAt: 0 }
   }
   return createGame("normal", DEFAULT_SETTINGS)
 }

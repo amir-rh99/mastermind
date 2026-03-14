@@ -37,7 +37,7 @@ export function Header() {
           <h1 className="m-0 text-xl text-theme-title tracking-wide">MasterMind</h1>
 
           <div className="flex items-center justify-end gap-2">
-            {/* <button
+            <button
               onClick={() => setShowStats(true)}
               aria-label="Stats"
               className="relative flex cursor-pointer text-theme-icon hover:text-theme-title transition-colors"
@@ -48,7 +48,7 @@ export function Header() {
                   {currentStreak}
                 </span>
               )}
-            </button> */}
+            </button>
 
             <button
               onClick={() => setShowSettings(true)}
