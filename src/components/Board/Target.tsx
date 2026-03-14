@@ -1,14 +1,20 @@
 import { useGame, useTimer } from "@/hooks"
 import { cn, COLORS } from "@/lib"
-import { HelpCircle, Timer } from "lucide-react"
+import { HelpCircle, List, Timer } from "lucide-react"
 
-export function Target() {
+interface TargetProps {
+  onSummaryToggle?: () => void
+  showSummary?: boolean
+}
+
+export function Target({ onSummaryToggle, showSummary }: TargetProps) {
   const { game, dispatch, settings } = useGame()
   const { formatted } = useTimer()
   const { target, model, guesses, status } = game
 
   const isRevealed = status !== "playing"
   const remaining = model.chances - guesses.length
+  const hasGuesses = guesses.length > 0
 
   return (
     <div className="mb-4 sticky top-2 z-9 flex flex-col gap-1">
@@ -46,15 +52,41 @@ export function Target() {
           )
         })}
 
-        <div
-          className={cn(
-            "square rounded-2xl text-theme-target-svg bg-theme-surface",
-            status === "lost" && "bg-wrong text-white",
-            status === "won" && "bg-exact text-white",
-          )}
-        >
-          {isRevealed ? status : remaining}
-        </div>
+        {/* last cell: summary toggle when playing, status when game over */}
+        {isRevealed ? (
+          <div
+            className={cn(
+              "square rounded-2xl text-theme-target-svg",
+              status === "lost" && "bg-wrong text-white",
+              status === "won" && "bg-exact text-white",
+            )}
+          >
+            {status}
+          </div>
+        ) : (
+          <button
+            onClick={hasGuesses ? onSummaryToggle : undefined}
+            className={cn(
+              "square rounded-2xl flex flex-col items-center justify-center gap-0.5 transition-colors",
+              hasGuesses
+                ? showSummary
+                  ? "bg-accent/20 text-accent cursor-pointer"
+                  : "bg-theme-surface text-theme-target-svg cursor-pointer hover:bg-theme-surface-dark"
+                : "bg-theme-surface text-theme-target-svg",
+            )}
+          >
+            {hasGuesses ? (
+              <>
+                <List size={14} />
+                <span className="text-[10px] tabular-nums leading-none">
+                  {guesses.length}/{model.chances}
+                </span>
+              </>
+            ) : (
+              <span className="text-base">{remaining}</span>
+            )}
+          </button>
+        )}
       </div>
     </div>
   )
