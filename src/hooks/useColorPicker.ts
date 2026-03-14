@@ -4,10 +4,11 @@ import { useGame } from "./useGame"
 
 export function useColorPicker() {
   const { game, dispatch, settings } = useGame()
-  const { currentRow, target } = game
+  const { currentRow } = game
 
-  const targetHasDuplicates = new Set(target).size !== target.length
-  const duplicatesAllowed = settings.allowDuplicateColors || targetHasDuplicates
+  // In classic mode (no duplicate target), block duplicate colors in guesses
+  // In hard mode (duplicate target), allow duplicates since the code may have them
+  const duplicatesAllowed = settings.allowDuplicateTarget
 
   const isColorUsed = useCallback(
     (color: string) => {
@@ -34,5 +35,5 @@ export function useColorPicker() {
     [dispatch, isColorUsed],
   )
 
-  return { pickColor, pickColorByIndex, isColorUsed, duplicatesAllowed }
+  return { pickColor, pickColorByIndex, isColorUsed }
 }

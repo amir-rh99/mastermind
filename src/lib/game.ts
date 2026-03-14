@@ -39,8 +39,6 @@ function buildModel(difficulty: Difficulty, settings: Settings): GameModel {
   let extra = 0
 
   if (settings.allowDuplicateTarget) extra += BONUS_CHANCES.duplicateTarget
-  if (!settings.allowDuplicateColors && !settings.allowDuplicateTarget)
-    extra += BONUS_CHANCES.noDuplicateGuess
 
   return { ...base, chances: base.chances + extra }
 }

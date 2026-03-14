@@ -25,7 +25,6 @@ export type GameStatus = "playing" | "won" | "lost"
 
 export interface Settings {
   autoScroll: boolean
-  allowDuplicateColors: boolean
   allowDuplicateTarget: boolean
   showTimer: boolean
 }

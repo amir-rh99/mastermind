@@ -55,22 +55,27 @@ export function computeStreak(winDates: string[], freezeUsedDates: string[]): nu
 }
 
 // auto-apply freeze on load if streak would break
+// Freeze protects YESTERDAY (a missed day)
+// Only applies if: yesterday has no win/freeze, but the day before yesterday did.
 export function checkAndApplyFreeze(data: StreakData): StreakData {
-  const today = getToday()
-
-  if (data.winDates.includes(today)) return data
-  if (data.freezeUsedDates.includes(today)) return data
-
   const yesterday = toLocalDateStr(addDays(new Date(), -1))
-  const hadActivity = data.winDates.includes(yesterday) || data.freezeUsedDates.includes(yesterday)
 
-  if (!hadActivity) return data
+  // yesterday already covered — nothing to do
+  if (data.winDates.includes(yesterday)) return data
+  if (data.freezeUsedDates.includes(yesterday)) return data
+
+  // check if the day before yesterday had activity (otherwise no streak to protect)
+  const twoDaysAgo = toLocalDateStr(addDays(new Date(), -2))
+  const hadPriorActivity =
+    data.winDates.includes(twoDaysAgo) || data.freezeUsedDates.includes(twoDaysAgo)
+
+  if (!hadPriorActivity) return data
 
   if (data.freezes > 0) {
     return {
       ...data,
       freezes: data.freezes - 1,
-      freezeUsedDates: [...data.freezeUsedDates, today],
+      freezeUsedDates: [...data.freezeUsedDates, yesterday],
     }
   }
 

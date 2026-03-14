@@ -15,14 +15,13 @@ export const COLORS = [
 
 export const BASE_MODELS: Record<Difficulty, GameModel> = {
   easy: { size: 3, chances: 8 },
-  normal: { size: 4, chances: 8 },
-  hard: { size: 5, chances: 10 },
+  normal: { size: 4, chances: 10 },
+  hard: { size: 5, chances: 12 },
 }
 
 // extra chances for harder modes
 export const BONUS_CHANCES = {
   duplicateTarget: 2,
-  noDuplicateGuess: 2,
 }
 
 export const STORAGE_KEYS = {
@@ -35,7 +34,6 @@ export const STORAGE_KEYS = {
 
 export const DEFAULT_SETTINGS: Settings = {
   autoScroll: true,
-  allowDuplicateColors: false,
   allowDuplicateTarget: false,
   showTimer: true,
 }

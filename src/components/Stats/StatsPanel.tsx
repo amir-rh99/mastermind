@@ -1,36 +1,35 @@
 import { useGame } from "@/hooks"
 import { cn, getWeekDays } from "@/lib"
-import { Clock, Flame, Snowflake, Target, Trophy, Zap } from "lucide-react"
+import { Clock, Flame, FlaskConical, Snowflake, Target, Trophy, Zap } from "lucide-react"
+
+function getStreakMessage(streak: number): string {
+  if (streak === 0) return "Win today to start a streak!"
+  if (streak === 1) return "Come back tomorrow to keep it going!"
+  if (streak < 5) return "Keep it up!"
+  if (streak < 10) return "You're on fire!"
+  if (streak < 20) return "Unstoppable!"
+  if (streak < 50) return "Legendary streak!"
+  return "Absolutely insane!"
+}
 
 export function StatsPanel() {
   const { stats, streak, currentStreak } = useGame()
   const days = getWeekDays(streak)
 
-  const wins = stats.history.filter((r) => r.status === "won").length
-  const losses = stats.history.filter((r) => r.status === "lost").length
-  const winRate = stats.history.length > 0 ? Math.round((wins / stats.history.length) * 100) : 0
+  const allWins = stats.history.filter((r) => r.status === "won")
+  const total = stats.history.length
+  const wins = allWins.length
+  const winRate = total > 0 ? Math.round((wins / total) * 100) : 0
+  const hardWins = allWins.filter((r) => r.duplicateTarget).length
 
   const avgGuesses =
-    wins > 0
-      ? (
-          stats.history.filter((r) => r.status === "won").reduce((s, r) => s + r.guessCount, 0) /
-          wins
-        ).toFixed(1)
-      : "—"
+    wins > 0 ? (allWins.reduce((s, r) => s + r.guessCount, 0) / wins).toFixed(1) : "—"
 
-  const avgTime =
-    wins > 0
-      ? formatTime(
-          stats.history.filter((r) => r.status === "won").reduce((s, r) => s + r.timeMs, 0) / wins,
-        )
-      : "—"
+  const avgTime = wins > 0 ? formatTime(allWins.reduce((s, r) => s + r.timeMs, 0) / wins) : "—"
 
-  const bestTime =
-    wins > 0
-      ? formatTime(
-          Math.min(...stats.history.filter((r) => r.status === "won").map((r) => r.timeMs)),
-        )
-      : "—"
+  const bestTime = wins > 0 ? formatTime(Math.min(...allWins.map((r) => r.timeMs))) : "—"
+
+  const nextFreezeMilestone = Math.ceil((currentStreak + 1) / 5) * 5
 
   return (
     <div>
@@ -56,6 +55,8 @@ export function StatsPanel() {
           </span>
           <span className="text-sm text-theme-text/50">{currentStreak === 1 ? "day" : "days"}</span>
         </div>
+
+        <p className="text-xs text-theme-text/40 m-0">{getStreakMessage(currentStreak)}</p>
 
         <div className="flex gap-2">
           {days.map((day) => (
@@ -93,18 +94,25 @@ export function StatsPanel() {
           ))}
         </div>
 
-        {streak.freezes > 0 && (
-          <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs">
-            <Snowflake size={12} />
-            <span>
-              {streak.freezes} freeze{streak.freezes !== 1 ? "s" : ""}
+        <div className="flex items-center gap-3">
+          {streak.freezes > 0 && (
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent/10 text-accent text-xs">
+              <Snowflake size={12} />
+              <span>
+                {streak.freezes} freeze{streak.freezes !== 1 ? "s" : ""}
+              </span>
+            </div>
+          )}
+          {currentStreak > 0 && (
+            <span className="text-[11px] text-theme-text/25">
+              Next freeze at {nextFreezeMilestone} days
             </span>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       {/* stats */}
-      {stats.history.length > 0 ? (
+      {total > 0 ? (
         <>
           <hr className="border-theme-border mb-4" />
 
@@ -115,23 +123,27 @@ export function StatsPanel() {
               label="Win rate"
               accent="text-exact"
             />
-            <StatCard
-              icon={<Zap size={16} />}
-              value={`${wins}/${stats.history.length}`}
-              label="Won / Played"
-            />
+            <StatCard icon={<Zap size={16} />} value={`${wins}/${total}`} label="Won / Played" />
             <StatCard icon={<Target size={16} />} value={avgGuesses} label="Avg guesses" />
             <StatCard icon={<Clock size={16} />} value={avgTime} label="Avg time" />
           </div>
 
-          {wins > 0 && (
-            <div className="mt-3 flex justify-center">
+          <div className="mt-3 flex justify-center gap-2">
+            {wins > 0 && (
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-exact/10 text-exact text-xs">
                 <Clock size={12} />
                 <span>Best: {bestTime}</span>
               </div>
-            </div>
-          )}
+            )}
+            {hardWins > 0 && (
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-correct/10 text-correct text-xs">
+                <FlaskConical size={12} />
+                <span>
+                  {hardWins} hard {hardWins === 1 ? "win" : "wins"}
+                </span>
+              </div>
+            )}
+          </div>
         </>
       ) : (
         <>

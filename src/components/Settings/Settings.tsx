@@ -1,25 +1,12 @@
 import { useGame } from "@/hooks"
 import { cn, BONUS_CHANCES } from "@/lib"
-import { FlaskConical, Moon, RotateCcw, Sun, RotateCw } from "lucide-react"
+import { Moon, RotateCcw, Sun, RotateCw } from "lucide-react"
 
 export function Settings() {
-  const { settings, updateSettings, dispatch, theme, toggleTheme, game } = useGame()
-
-  const targetHasDuplicates = new Set(game.target).size !== game.target.length
+  const { settings, updateSettings, dispatch, theme, toggleTheme } = useGame()
 
   const handleDuplicateTargetChange = (v: boolean) => {
-    const newSettings = {
-      ...settings,
-      allowDuplicateTarget: v,
-      ...(v ? { allowDuplicateColors: true } : {}),
-    }
-    updateSettings(newSettings)
-    dispatch({ type: "RESTART", settings: newSettings })
-  }
-
-  const handleDuplicateGuessChange = (v: boolean) => {
-    if (!v && targetHasDuplicates) return
-    const newSettings = { ...settings, allowDuplicateColors: v }
+    const newSettings = { ...settings, allowDuplicateTarget: v }
     updateSettings(newSettings)
     dispatch({ type: "RESTART", settings: newSettings })
   }
@@ -27,15 +14,12 @@ export function Settings() {
   const handleReset = () => {
     const defaults = {
       autoScroll: true,
-      allowDuplicateColors: false,
       allowDuplicateTarget: false,
       showTimer: true,
     }
     updateSettings(defaults)
     dispatch({ type: "RESTART", settings: defaults })
   }
-
-  const dupGuessLocked = targetHasDuplicates
 
   return (
     <div>
@@ -71,83 +55,26 @@ export function Settings() {
 
         <hr className="border-theme-border" />
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2 text-theme-text/50">
-            <FlaskConical size={16} />
-            <span className="text-sm">Advanced Rules</span>
+        {/* Repeating colors in secret code */}
+        <div className="flex items-center justify-between gap-3">
+          <div className="flex-1">
+            <p className="text-theme-title text-base m-0">Repeating colors</p>
+            <p className="text-theme-text/60 text-sm m-0 font-extralight">
+              {settings.allowDuplicateTarget
+                ? `Hard mode — the secret code might use a color twice (e.g. 🔴🔵🔴🟢), so you get +${BONUS_CHANCES.duplicateTarget} extra guesses.`
+                : "Classic — every color in the secret code is different, no repeats."}
+            </p>
           </div>
-          <span className="flex items-center gap-1 text-[11px] text-theme-text/30">
-            <RotateCw size={10} />
-            Restarts game
-          </span>
+          <ToggleSwitch
+            checked={settings.allowDuplicateTarget}
+            onChange={handleDuplicateTargetChange}
+          />
         </div>
 
-        {/* duplicate guesses */}
-        <div className={cn("flex flex-col gap-1", dupGuessLocked && "opacity-50")}>
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-theme-title text-base m-0">Duplicate guesses</p>
-            <ToggleSwitch
-              checked={settings.allowDuplicateColors}
-              onChange={handleDuplicateGuessChange}
-              disabled={dupGuessLocked}
-            />
-          </div>
-          {dupGuessLocked ? (
-            <p className="text-theme-text/40 text-sm m-0 font-extralight">
-              Required — target contains duplicate colors.
-            </p>
-          ) : (
-            <div className="flex flex-col gap-0.5 text-sm font-extralight">
-              <p
-                className={cn(
-                  "m-0",
-                  settings.allowDuplicateColors ? "text-exact/80" : "text-theme-text/25",
-                )}
-              >
-                <span className="font-bold">ON:</span> Same color allowed multiple times
-              </p>
-              <p
-                className={cn(
-                  "m-0",
-                  !settings.allowDuplicateColors ? "text-exact/80" : "text-theme-text/25",
-                )}
-              >
-                <span className="font-bold">OFF:</span> Each color once per guess, +
-                {BONUS_CHANCES.noDuplicateGuess} guesses
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* duplicate target */}
-        <div className="flex flex-col gap-1">
-          <div className="flex items-center justify-between gap-3">
-            <p className="text-theme-title text-base m-0">Duplicate target</p>
-            <ToggleSwitch
-              checked={settings.allowDuplicateTarget}
-              onChange={handleDuplicateTargetChange}
-            />
-          </div>
-          <div className="flex flex-col gap-0.5 text-sm font-extralight">
-            <p
-              className={cn(
-                "m-0",
-                !settings.allowDuplicateTarget ? "text-exact/80" : "text-theme-text/25",
-              )}
-            >
-              <span className="font-bold">OFF:</span> All unique colors — classic mode
-            </p>
-            <p
-              className={cn(
-                "m-0",
-                settings.allowDuplicateTarget ? "text-exact/80" : "text-theme-text/25",
-              )}
-            >
-              <span className="font-bold">ON:</span> Code may repeat colors, +
-              {BONUS_CHANCES.duplicateTarget} guesses
-            </p>
-          </div>
-        </div>
+        <span className="flex items-center gap-1 text-[11px] text-theme-text/30 -mt-2">
+          <RotateCw size={10} />
+          Toggling restarts the current game
+        </span>
 
         <hr className="border-theme-border" />
 
